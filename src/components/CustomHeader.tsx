@@ -24,7 +24,7 @@ const CustomHeader: React.FC<Props> = ({ title, showBackButton = false }) => {
         <View style={styles.placeholder} />
       )}
       <Text style={styles.title}>{title}</Text>
-      <View style={styles.placeholder} /> {/* Placeholder for alignment */}
+      <View style={styles.placeholder} />
     </View>
   );
 };
