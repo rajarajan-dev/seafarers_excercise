@@ -12,7 +12,11 @@ const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Checklists">
-        <Stack.Screen name="Checklists" component={ChecklistsScreen} />
+        <Stack.Screen
+          name="Checklists"
+          component={ChecklistsScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Viewlists" component={ViewlistsScreen} />
         <Stack.Screen name="Editlists" component={EditlistsScreen} />
       </Stack.Navigator>
