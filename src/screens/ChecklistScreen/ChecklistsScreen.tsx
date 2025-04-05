@@ -16,7 +16,7 @@ type Props = StackScreenProps<RootStackParamList, "Checklists">;
 const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const listRef = useRef<FlatList>(null);
-  const scrollRef = useRef<boolean>(true); // Controls scroll state
+  const scrollRef = useRef<boolean>(true);
 
   const dispatch = useAppDispatch();
   // const data = useAppSelector(selectMyCheckList);

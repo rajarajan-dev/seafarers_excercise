@@ -1,12 +1,12 @@
 const Colors = {
   nav30: "#ECEEF0",
   grey600: "#AAAAAA",
+  red500: "#E6767F",
   primary: "#366288",
   secondary: "#378176",
   white: "#FFFFFF",
   black: "#000000",
   grey: "#D6D6D6",
-  red: "#E6767F",
 };
 
 const Typography = {

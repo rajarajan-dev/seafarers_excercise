@@ -1,8 +1,4 @@
-import React, {
-    useRef,
-    useImperativeHandle,
-    forwardRef,
-  } from "react";
+import React, { useRef, useImperativeHandle, forwardRef } from "react";
 import {
   Animated,
   PanResponder,
@@ -11,6 +7,8 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
+import IconTrashCan from "../assets/icons/iconTrashCan.svg";
+import { Colors, Typography } from "../theme";
 
 type Props = {
   children: React.ReactNode;
@@ -22,7 +20,7 @@ export type SwipeableRowRef = {
   close: () => void;
 };
 
-const THRESHOLD = 80;
+const THRESHOLD = 90;
 
 const SwipeableRow = forwardRef<SwipeableRowRef, Props>(
   ({ children, onDelete, setScrolling }, ref) => {
@@ -71,12 +69,18 @@ const SwipeableRow = forwardRef<SwipeableRowRef, Props>(
 
     const actionTranslate = pan.x.interpolate({
       inputRange: [-THRESHOLD, 0],
-      outputRange: [0, 40],
+      outputRange: [0, 45],
+      extrapolate: "clamp",
+    });
+
+    const borderRadius = pan.x.interpolate({
+      inputRange: [-THRESHOLD, 0],
+      outputRange: [0, 6], // 12px when at rest, 0 when swiped
       extrapolate: "clamp",
     });
 
     return (
-      <View style={styles.container}>
+      <View style={styles.wrapper}>
         <Animated.View
           style={[
             styles.actionsContainer,
@@ -93,12 +97,20 @@ const SwipeableRow = forwardRef<SwipeableRowRef, Props>(
             }}
             style={[styles.action, styles.delete]}
           >
+            <IconTrashCan width={24} height={24} fill="#fff" />
             <Text style={styles.actionText}>Delete</Text>
           </TouchableOpacity>
         </Animated.View>
 
         <Animated.View
-          style={[styles.item, { transform: [{ translateX: pan.x }] }]}
+          style={[
+            styles.item,
+            {
+              transform: [{ translateX: pan.x }],
+              borderTopRightRadius: borderRadius,
+              borderBottomRightRadius: borderRadius,
+            },
+          ]}
           {...panResponder.panHandlers}
         >
           {children}
@@ -109,30 +121,47 @@ const SwipeableRow = forwardRef<SwipeableRowRef, Props>(
 );
 
 const styles = StyleSheet.create({
-  container: {
-    position: "relative",
+  wrapper: {
+    borderRadius: 6,
+    overflow: "hidden",
     width: "100%",
+    position: "relative",
+    backgroundColor: "transparent", // transparent wrapper
   },
   item: {
     width: "100%",
+    borderRadius: 6,
+    overflow: "hidden", // important to clip inner content like background
+    backgroundColor: "white",
   },
   actionsContainer: {
     position: "absolute",
     right: 0,
     height: "100%",
     flexDirection: "row",
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
+    overflow: "hidden",
   },
   action: {
-    width: 80,
+    width: 90,
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "column",
+  },
+  actionIcon: {
+    marginBottom: 2, // or marginRight if using row layout
   },
   delete: {
-    backgroundColor: "#F44336",
+    backgroundColor: Colors.red500,
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
   },
   actionText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 12,
+    fontFamily: Typography.fontFamily.RobotoMedium,
+    textTransform: "uppercase",
   },
 });
 
