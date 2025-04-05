@@ -1,9 +1,17 @@
 import "./gesture-handler";
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
 import AppNavigator from "./src/Navigation";
+import { Provider } from "react-redux";
+import { persistor, store } from "./src/store/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 function App(): React.JSX.Element {
-  return <AppNavigator />;
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <AppNavigator />
+      </PersistGate>
+    </Provider>
+  );
 }
 export default App;
