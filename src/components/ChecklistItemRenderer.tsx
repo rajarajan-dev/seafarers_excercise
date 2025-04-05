@@ -2,15 +2,19 @@ import {
   StyleSheet,
   View,
   Text,
-  LayoutAnimation,
   Animated,
+  Easing,
+  TouchableOpacity,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Colors, Typography } from "../theme";
 import { ChecklistCategory } from "../types/CheckListTypes";
 import IconArrow from "../assets/icons/iconArrow.svg";
 import { formatDateToDDMMYY } from "../helper/formatDateToDDMMYY";
 import SwipeableRow, { SwipeableRowRef } from "./SwipeableRow";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/navigation";
 
 type Props = {
   checkListCategory: ChecklistCategory;
@@ -24,36 +28,85 @@ const ChecklistItemRenderer = ({
   onDelete,
 }: Props) => {
   const rowRef = useRef<SwipeableRowRef>(null);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const translateYAnim = useRef(new Animated.Value(20)).current;
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   const handleDelete = () => {
-    onDelete(checkListCategory.titleId);
-    rowRef.current?.close(); // Close the row after delete
+    // Optional: animate out before calling delete
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(() => {
+      onDelete(checkListCategory.titleId);
+      rowRef.current?.close();
+    });
   };
+
+  // Animate in on mount
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateYAnim, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   return (
     <SwipeableRow setScrolling={setScrolling} onDelete={() => handleDelete()}>
-      <View style={styles.container}>
-        <View style={styles.ListRow}>
-          <View style={styles.contentPart}>
-            <Text style={styles.heading}>{checkListCategory.titleName} </Text>
-            <Text style={styles.subHeading}>
-              {`Date created:  ${formatDateToDDMMYY(
-                checkListCategory.createdAt
-              )}`}{" "}
-            </Text>
-            <Text style={styles.subHeading}>
-              {`Last item added:  ${checkListCategory.lastItemAdded}`}{" "}
-            </Text>
-          </View>
-          <View style={styles.arrowPart}>
-            <IconArrow
-              width={15}
-              height={15}
-              style={styles.arrow}
-              fill={Colors.grey600}
-            />
-          </View>
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: translateYAnim }],
+          },
+        ]}
+      >
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Editlists", {
+                titleId: checkListCategory.titleId,
+              })
+            }
+          >
+            <View style={styles.ListRow}>
+              <View style={styles.contentPart}>
+                <Text style={styles.heading}>
+                  {checkListCategory.titleName}{" "}
+                </Text>
+                <Text style={styles.subHeading}>
+                  {`Date created:  ${formatDateToDDMMYY(
+                    checkListCategory.createdAt
+                  )}`}{" "}
+                </Text>
+                <Text style={styles.subHeading}>
+                  {`Last item added:  ${checkListCategory.lastItemAdded}`}{" "}
+                </Text>
+              </View>
+              <View style={styles.arrowPart}>
+                <IconArrow
+                  width={15}
+                  height={15}
+                  style={styles.arrow}
+                  fill={Colors.grey600}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
     </SwipeableRow>
   );
 };

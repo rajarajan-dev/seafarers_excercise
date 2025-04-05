@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import ChecklistsScreen from "./screens/ChecklistScreen/ChecklistsScreen";
 import ViewlistsScreen from "./screens/ViewlistsScreen";
-import EditlistsScreen from "./screens/EditlistsScreen";
+import EditlistsScreen from "./screens/EditlistsScreen/EditlistsScreen";
 import { RootStackParamList } from "./types/navigation";
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -18,7 +18,11 @@ const AppNavigator: React.FC = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Viewlists" component={ViewlistsScreen} />
-        <Stack.Screen name="Editlists" component={EditlistsScreen} />
+        <Stack.Screen
+          name="Editlists"
+          component={EditlistsScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

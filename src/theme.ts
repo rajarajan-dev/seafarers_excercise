@@ -8,6 +8,15 @@ const Colors = {
   white: "#FFFFFF",
   black: "#000000",
   grey: "#D6D6D6",
+
+  background: "#F8F9FA",
+  text: "#212529",
+  border: "#DEE2E6",
+  borderLight: "#E9ECEF",
+  shadow: "#000000",
+  success: "#28A745",
+  danger: "#DC3545",
+  warning: "#FFC107",
 };
 
 const Typography = {

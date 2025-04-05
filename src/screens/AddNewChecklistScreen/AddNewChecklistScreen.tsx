@@ -57,7 +57,7 @@ const AddNewChecklistScreen: React.FC<Props> = ({ setModalVisible }) => {
     };
     dispatch(addCheckListCategory(payload));
     setModalVisible(false);
-    //navigation.push("EditCheckList", { titleId: payload.titleId });
+    navigation.push("Editlists", { titleId: payload.titleId });
   };
 
   return (
