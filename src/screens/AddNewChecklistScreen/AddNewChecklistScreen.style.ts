@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
 
   titleInputBox: {
     backgroundColor: "white",
-    borderRadius: 5,
+    borderRadius: 10,
     minHeight: 80,
     marginTop: 50,
     marginHorizontal: 10,

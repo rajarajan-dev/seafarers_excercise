@@ -4,6 +4,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import CircularIcon from "../../components/CircularIcon";
 import useStatusBarHeight from "../../hooks/useStatusBarHeight";
 import { styles } from "./AddNewChecklistScreen.style";
+import ClearableInput from "../../components/ClearableInput";
 
 interface Props {
   setModalVisible: (visible: boolean) => void;
@@ -35,12 +36,7 @@ const AddNewChecklistScreen: React.FC<Props> = ({ setModalVisible }) => {
         </View>
         {/* Title input box */}
         <View style={styles.titleInputBox}>
-          <TextInput
-            value={insertItem}
-            style={styles.textInput}
-            placeholder="Insert list's title"
-            onChangeText={(text) => setInsertItem(text)}
-          />
+          <ClearableInput placeholder="Insert list's title" />
         </View>
       </View>
     </View>
