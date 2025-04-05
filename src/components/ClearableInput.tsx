@@ -1,36 +1,61 @@
-import React, { useState } from "react";
-import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-import IconClear from "../assets/icons/iconClose.svg"; // SVG icon path
+import React, {
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput as RNTextInput,
+} from "react-native";
+import IconClear from "../assets/icons/iconClose.svg";
 import { Colors, Typography } from "../theme";
+
+export interface ClearableInputRef {
+  focus: () => void;
+}
 
 interface ClearableInputProps {
   placeholder?: string;
+  value: string;
+  onChangeText: (text: string) => void;
 }
 
-const ClearableInput: React.FC<ClearableInputProps> = ({ placeholder }) => {
-  const [value, setValue] = useState("");
+const ClearableInput = forwardRef<ClearableInputRef, ClearableInputProps>(
+  ({ placeholder, value, onChangeText }, ref) => {
+    const inputRef = useRef<RNTextInput>(null);
 
-  const clearInput = () => {
-    setValue("");
-  };
+    useImperativeHandle(ref, () => ({
+      focus: () => {
+        inputRef.current?.focus();
+      },
+    }));
 
-  return (
-    <View style={styles.inputRow}>
-      <TextInput
-        value={value}
-        onChangeText={setValue}
-        placeholder={placeholder || "Insert list's title"}
-        placeholderTextColor="#888"
-        style={styles.textInput}
-      />
-      {value.length > 0 && (
-        <TouchableOpacity onPress={clearInput} style={styles.clearButton}>
-          <IconClear width={30} height={30} fill={Colors.black} />
-        </TouchableOpacity>
-      )}
-    </View>
-  );
-};
+    return (
+      <View style={styles.inputRow}>
+        <TextInput
+          ref={inputRef}
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder || "Insert list's title"}
+          placeholderTextColor="#888"
+          style={styles.textInput}
+        />
+        {value.length > 0 && (
+          <TouchableOpacity
+            onPress={() => onChangeText("")}
+            style={styles.clearButton}
+          >
+            <IconClear width={30} height={30} fill={Colors.black} />
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   inputRow: {

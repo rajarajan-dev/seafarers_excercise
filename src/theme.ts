@@ -2,6 +2,7 @@ const Colors = {
   nav30: "#ECEEF0",
   grey600: "#AAAAAA",
   red500: "#E6767F",
+  blue: "#0093BB",
   primary: "#366288",
   secondary: "#378176",
   white: "#FFFFFF",
