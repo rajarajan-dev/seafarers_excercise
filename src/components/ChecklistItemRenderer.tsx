@@ -25,7 +25,7 @@ const ChecklistItemRenderer = ({
   };
 
   return (
-    <SwipeableRow setScrolling={setScrolling} onDelete={() => handleDelete}>
+    <SwipeableRow setScrolling={setScrolling} onDelete={() => handleDelete()}>
       <View style={styles.container}>
         <View style={styles.ListRow}>
           <View style={styles.contentPart}>

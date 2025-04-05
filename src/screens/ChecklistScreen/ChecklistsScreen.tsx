@@ -59,7 +59,7 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
       <FlatList
         data={data}
         keyExtractor={(title) => title.titleId}
-        // Space between rows
+        style={{ marginTop: 10 }}
         ItemSeparatorComponent={() => (
           <View
             style={{
