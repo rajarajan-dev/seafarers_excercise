@@ -1,9 +1,4 @@
-import React, {
-  useRef,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useRef, forwardRef, useImperativeHandle } from "react";
 import {
   View,
   TextInput,

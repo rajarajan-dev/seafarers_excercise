@@ -13,12 +13,19 @@ import CustomHeader from "../../components/CustomHeader";
 import styles from "./ChecklistScreen.style";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TitleAndSubtitleSection from "../../components/TitleAndSubtitleSection";
-import { useAppDispatch } from "../../hooks/stateManagementHooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/stateManagementHooks";
 import IconAdd from "../../assets/icons/iconAdd.svg";
 import checklistData from "../../mocks/ChecklistCategory";
 import ChecklistItemRenderer from "../../components/ChecklistItemRenderer";
 import AddNewChecklistScreen from "../AddNewChecklistScreen/AddNewChecklistScreen";
 import { BlurView } from "@react-native-community/blur";
+import {
+  removeCheckListCategory,
+  selectMyCheckList,
+} from "../../store/mychecklistSlice";
 
 type Props = StackScreenProps<RootStackParamList, "Checklists">;
 
@@ -28,28 +35,10 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
   const scrollRef = useRef<boolean>(true);
 
   const dispatch = useAppDispatch();
-  // const data = useAppSelector(selectMyCheckList);
-
-  const data = checklistData;
+  const data = useAppSelector(selectMyCheckList);
 
   const handleDelete = (id: string) => {
-    Alert.alert(
-      "Confirm Delete",
-      "Are you sure you want to delete this item?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: () => {
-            //setData((prev) => prev.filter((item) => item.id !== id));
-          },
-        },
-      ]
-    );
+    dispatch(removeCheckListCategory({ titleId: id }));
   };
 
   return (
@@ -65,30 +54,32 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
         subTitle="Create your own personal checklist"
         style={{ marginTop: 24 }}
       />
-      <FlatList
-        data={data}
-        keyExtractor={(title) => title.titleId}
-        style={{ marginTop: 10 }}
-        ItemSeparatorComponent={() => (
-          <View
-            style={{
-              height: 12,
-              backgroundColor: "transparent",
-            }}
-          />
-        )}
-        renderItem={({ item }) => (
-          <ChecklistItemRenderer
-            checkListCategory={item}
-            onDelete={handleDelete}
-            setScrolling={(enabled) => {
-              scrollRef.current = enabled;
-              listRef.current?.setNativeProps({ scrollEnabled: enabled });
-            }}
-          />
-        )}
-        ref={listRef}
-      />
+      {data && (
+        <FlatList
+          data={data.data}
+          keyExtractor={(title) => title.titleId}
+          style={{ marginTop: 10 }}
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 12,
+                backgroundColor: "transparent",
+              }}
+            />
+          )}
+          renderItem={({ item }) => (
+            <ChecklistItemRenderer
+              checkListCategory={item}
+              onDelete={handleDelete}
+              setScrolling={(enabled) => {
+                scrollRef.current = enabled;
+                listRef.current?.setNativeProps({ scrollEnabled: enabled });
+              }}
+            />
+          )}
+          ref={listRef}
+        />
+      )}
 
       {/* Floating Button to Open Modal */}
       <TouchableOpacity

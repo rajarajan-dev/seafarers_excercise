@@ -1,4 +1,10 @@
-import { StyleSheet, View, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  LayoutAnimation,
+  Animated,
+} from "react-native";
 import React, { useRef } from "react";
 import { Colors, Typography } from "../theme";
 import { ChecklistCategory } from "../types/CheckListTypes";
@@ -18,7 +24,6 @@ const ChecklistItemRenderer = ({
   onDelete,
 }: Props) => {
   const rowRef = useRef<SwipeableRowRef>(null);
-
   const handleDelete = () => {
     onDelete(checkListCategory.titleId);
     rowRef.current?.close(); // Close the row after delete

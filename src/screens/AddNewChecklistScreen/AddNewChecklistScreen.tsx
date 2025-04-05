@@ -1,11 +1,5 @@
-import { View, TextInput, Button, TouchableOpacity, Text } from "react-native";
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { View, TouchableOpacity, Alert } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 
 import CircularIcon from "../../components/CircularIcon";
 import useStatusBarHeight from "../../hooks/useStatusBarHeight";
@@ -14,15 +8,32 @@ import ClearableInput, {
   ClearableInputRef,
 } from "../../components/ClearableInput";
 import RoundedButton from "../../components/RoundedButton";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../types/navigation";
+import { useNavigation } from "@react-navigation/native";
+import { useAppDispatch } from "../../hooks/stateManagementHooks";
+import { ChecklistCategory } from "../../types/CheckListTypes";
+import { generateUniqueId } from "../../helper/generateUniqueId";
+import { addCheckListCategory } from "../../store/mychecklistSlice";
 
 interface Props {
   setModalVisible: (visible: boolean) => void;
 }
 
+type AddCategoryNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Checklists"
+>;
+
 const AddNewChecklistScreen: React.FC<Props> = ({ setModalVisible }) => {
   const statusBarHeight = useStatusBarHeight(); // Get the status bar height
-  const [insertItem, setInsertItem] = useState("");
+
   const inputRef = useRef<ClearableInputRef>(null);
+
+  const navigation = useNavigation<AddCategoryNavigationProp>();
+  const [insertItem, setInsertItem] = useState("");
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,6 +42,23 @@ const AddNewChecklistScreen: React.FC<Props> = ({ setModalVisible }) => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleAddCheckListCategory = () => {
+    if (!insertItem) {
+      Alert.alert("Please enter category");
+      return;
+    }
+    const payload: ChecklistCategory = {
+      titleId: generateUniqueId(),
+      titleName: insertItem,
+      createdAt: new Date().toISOString(),
+      lastItemAdded: "Not yet",
+      items: [],
+    };
+    dispatch(addCheckListCategory(payload));
+    setModalVisible(false);
+    //navigation.push("EditCheckList", { titleId: payload.titleId });
+  };
 
   return (
     <View style={styles.modalContainer}>
@@ -45,7 +73,10 @@ const AddNewChecklistScreen: React.FC<Props> = ({ setModalVisible }) => {
           >
             <CircularIcon props={styles.circleContainer} />
           </TouchableOpacity>
-          <RoundedButton title="Done" onButtonClick={() => {}} />
+          <RoundedButton
+            title="Done"
+            onButtonClick={handleAddCheckListCategory}
+          />
         </View>
         {/* Title input box */}
         <View style={styles.titleInputBox}>

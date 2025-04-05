@@ -9,11 +9,7 @@ interface Props {
 const RoundedButton: React.FC<Props> = ({ title, onButtonClick }) => {
   return (
     <View style={styles.saveEditContainer}>
-      <TouchableOpacity
-        onPress={() => {
-          onButtonClick;
-        }}
-      >
+      <TouchableOpacity onPress={onButtonClick}>
         <View style={styles.saveButton}>
           <Text style={styles.saveText}>{title}</Text>
         </View>
