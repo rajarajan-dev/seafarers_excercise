@@ -1,11 +1,8 @@
 import { StyleSheet } from "react-native";
+import { Colors, Typography } from "../../theme";
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  title: { fontSize: 24, fontWeight: "bold" },
-  normalregular: { fontSize: 18, fontFamily: "Roboto-Thin" },
-  regular: { fontSize: 18, fontFamily: "Roboto-Regular" },
-  bold: { fontSize: 18, fontFamily: "Roboto-Bold" },
+  container: { flex: 1, backgroundColor: Colors.nav30, paddingHorizontal: 16 },
 });
 
 export default styles;

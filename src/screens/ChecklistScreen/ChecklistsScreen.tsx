@@ -5,26 +5,25 @@ import { RootStackParamList } from "../../types/navigation";
 import CustomHeader from "../../components/CustomHeader";
 import styles from "./ChecklistScreen.style";
 import { SafeAreaView } from "react-native-safe-area-context";
+import TitleAndSubtitleSection from "../../components/TitleAndSubtitleSection";
 
 type Props = StackScreenProps<RootStackParamList, "Checklists">;
 
 const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Checklists Screen</Text>
-      <Button
-        title="Go to Viewlists"
-        onPress={() => navigation.navigate("Viewlists")}
+    <SafeAreaView style={styles.container}>
+      <CustomHeader title={"Checklists"} showBackButton />
+      <TitleAndSubtitleSection
+        title="Pre-Departure Documents List"
+        subTitle="List of all required documents for your upcoming assignment"
+        style={{ marginTop: 38 }}
       />
-      <Button
-        title="Go to Editlists"
-        onPress={() => navigation.navigate("Editlists")}
+      <TitleAndSubtitleSection
+        title="My Checklists"
+        subTitle="Create your own personal checklist"
+        style={{ marginTop: 24 }}
       />
-      <Text style={styles.normalregular}>This is Roboto Regular</Text>
-      <Text style={{ fontSize: 18 }}>This is Roboto Regular</Text>
-      <Text style={styles.regular}>This is Roboto Regular</Text>
-      <Text style={styles.bold}>This is Roboto Bold</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 

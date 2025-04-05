@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import BackArrow from "../assets/icons/backarrow.svg";
+import { Typography } from "../theme";
 
 interface Props {
   title: string;
@@ -34,10 +35,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    height: 60,
-    backgroundColor: "#3498db",
-    paddingHorizontal: 15,
-    paddingTop: 10,
+    height: 35,
   },
   backButton: {
     padding: 5,
@@ -48,10 +46,11 @@ const styles = StyleSheet.create({
     tintColor: "white",
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "white",
+    fontSize: 16,
+    color: "black",
     flex: 1,
+    fontFamily: Typography.fontFamily.RobotoBold,
+    textTransform: "capitalize",
     textAlign: "center",
   },
   placeholder: {
