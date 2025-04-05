@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     padding: 16,
     minWidth: 100,
-    minHeight: 40,
-    borderRadius: 40,
+    minHeight: 35,
+    borderRadius: 35,
   },
   saveText: {
     color: "white",

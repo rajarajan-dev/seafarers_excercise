@@ -13,24 +13,11 @@ export const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
-    paddingVertical: 10,
+    alignItems: "center",
   },
   circleContainer: {
     marginLeft: 10,
   },
-  saveEditContainer: {
-    marginRight: 12,
-    justifyContent: "center",
-  },
-  saveButton: {
-    backgroundColor: "green",
-    padding: 16,
-    minWidth: 100,
-    minHeight: 40,
-    borderRadius: 40,
-  },
-  saveText: { color: "white", textAlign: "center" },
   modalContent: {
     flex: 1,
     padding: 20,
