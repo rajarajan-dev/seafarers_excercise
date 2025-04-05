@@ -12,6 +12,10 @@ const styles = StyleSheet.create({
     right: 10,
     height: 100,
   },
+  absolute: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
 });
 
 export default styles;
