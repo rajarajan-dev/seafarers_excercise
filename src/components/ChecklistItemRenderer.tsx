@@ -1,10 +1,10 @@
 import { StyleSheet, View, Text } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { Colors, Typography } from "../theme";
 import { ChecklistCategory } from "../types/CheckListTypes";
 import IconArrow from "../assets/icons/iconArrow.svg";
 import { formatDateToDDMMYY } from "../helper/formatDateToDDMMYY";
-import SwipeableRow from "./SwipeableRow";
+import SwipeableRow, { SwipeableRowRef } from "./SwipeableRow";
 
 type Props = {
   checkListCategory: ChecklistCategory;
@@ -17,11 +17,15 @@ const ChecklistItemRenderer = ({
   setScrolling,
   onDelete,
 }: Props) => {
+  const rowRef = useRef<SwipeableRowRef>(null);
+
+  const handleDelete = () => {
+    onDelete(checkListCategory.titleId);
+    rowRef.current?.close(); // Close the row after delete
+  };
+
   return (
-    <SwipeableRow
-      setScrolling={setScrolling}
-      onDelete={() => onDelete(checkListCategory.titleId)}
-    >
+    <SwipeableRow setScrolling={setScrolling} onDelete={() => handleDelete}>
       <View style={styles.container}>
         <View style={styles.ListRow}>
           <View style={styles.contentPart}>
