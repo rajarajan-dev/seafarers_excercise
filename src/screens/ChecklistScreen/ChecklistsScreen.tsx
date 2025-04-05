@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { TouchableOpacity, FlatList, View } from "react-native";
+import { TouchableOpacity, FlatList, View, Alert } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types/navigation";
 import CustomHeader from "../../components/CustomHeader";
@@ -16,12 +16,32 @@ type Props = StackScreenProps<RootStackParamList, "Checklists">;
 const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const listRef = useRef<FlatList>(null);
-  const isScrollingEnabled = useRef(true);
+  const scrollRef = useRef<boolean>(true); // Controls scroll state
 
   const dispatch = useAppDispatch();
   // const data = useAppSelector(selectMyCheckList);
 
   const data = checklistData;
+
+  const handleDelete = (id: string) => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this item?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            //setData((prev) => prev.filter((item) => item.id !== id));
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,18 +70,15 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
         )}
         renderItem={({ item }) => (
           <ChecklistItemRenderer
-            listRef={listRef}
             checkListCategory={item}
+            onDelete={handleDelete}
             setScrolling={(enabled) => {
-              if (isScrollingEnabled.current !== enabled) {
-                isScrollingEnabled.current = enabled;
-                listRef.current?.setNativeProps({ scrollEnabled: enabled });
-              }
+              scrollRef.current = enabled;
+              listRef.current?.setNativeProps({ scrollEnabled: enabled });
             }}
           />
         )}
         ref={listRef}
-        scrollEnabled={isScrollingEnabled.current}
       />
 
       {/* Floating Button to Open Modal */}
