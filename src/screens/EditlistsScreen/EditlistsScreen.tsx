@@ -118,7 +118,7 @@ const EditlistsScreen = () => {
       })
     );
 
-    //navigation.push("ShowCheckList", { titleId: titleId });
+    navigation.push("Viewlists", { titleId: titleId });
   };
 
   return (

@@ -1,6 +1,8 @@
 export type RootStackParamList = {
   Checklists: undefined;
-  Viewlists: undefined;
+  Viewlists: {
+    titleId: string;
+  };
   Editlists: {
     titleId: string;
   };
