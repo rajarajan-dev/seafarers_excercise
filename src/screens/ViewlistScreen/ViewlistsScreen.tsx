@@ -43,9 +43,8 @@ const ViewlistsScreen = () => {
   const navigation = useNavigation<ShowCheckListNavigationProp>();
   const { data } = useAppSelector((state) => state.mycheckList);
   const route = useRoute();
-  //const { titleId } = route.params as { titleId: string };
-  //console.log("title Id " + titleId);
-  const titleId = "1743959502220-129";
+  const { titleId } = route.params as { titleId: string };
+
   const dispatch = useAppDispatch();
 
   const rowRefs = useRef(new Map<string, SwipeableSectionRowRef>());
@@ -146,7 +145,7 @@ const ViewlistsScreen = () => {
         <View style={styles.headerContainer}>
           <TouchableOpacity
             onPress={() => {
-              navigation.goBack();
+              navigation.popToTop();
             }}
           >
             <View style={styles.cancelContainer}>

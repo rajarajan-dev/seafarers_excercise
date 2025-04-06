@@ -75,11 +75,20 @@ const ChecklistItemRenderer = ({
       >
         <View style={styles.container}>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("Editlists", {
-                titleId: checkListCategory.titleId,
-              })
-            }
+            onPress={() => {
+              if (
+                checkListCategory.items &&
+                checkListCategory.items.length > 0
+              ) {
+                navigation.push("Viewlists", {
+                  titleId: checkListCategory.titleId,
+                });
+              } else {
+                navigation.push("Editlists", {
+                  titleId: checkListCategory.titleId,
+                });
+              }
+            }}
           >
             <View style={styles.ListRow}>
               <View style={styles.contentPart}>

@@ -58,7 +58,13 @@ const EditlistsScreen = () => {
         name: "",
         status: "Todo",
       };
-      setTemporaryItems([...checklist.items, newItem]);
+
+      // Only show todo items in temporary list
+      const editableTodos = checklist.items.filter(
+        (item) => item.status === "Todo"
+      );
+
+      setTemporaryItems([...editableTodos, newItem]);
 
       // Focus the new input after it's rendered
       setTimeout(() => {
@@ -105,16 +111,21 @@ const EditlistsScreen = () => {
   const handleSaveChanges = () => {
     if (!checklist) return;
 
-    // Filter out items with empty names
-    const nonEmptyItems = temporaryItems.filter(
+    const updatedTodos = temporaryItems.filter(
       (item) => item.name.trim() !== ""
     );
+
+    const completedItems = checklist.items.filter(
+      (item) => item.status === "Done"
+    );
+
+    const finalItems = [...updatedTodos, ...completedItems];
 
     // Create an action to update all items at once
     dispatch(
       updateMultipleCheckListItems({
         titleId,
-        items: nonEmptyItems,
+        items: finalItems,
       })
     );
 
