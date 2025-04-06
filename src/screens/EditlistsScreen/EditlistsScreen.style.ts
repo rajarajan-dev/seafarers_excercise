@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "../../theme";
+import { Colors, Typography } from "../../theme";
 
 export default StyleSheet.create({
   container: {
@@ -8,11 +8,11 @@ export default StyleSheet.create({
     backgroundColor: Colors.background,
   },
   title: {
-    fontSize: 22,
-    fontWeight: "600",
+    fontFamily: Typography.fontFamily.RobotoBold,
+    fontSize: 18,
     marginBottom: 20,
-    color: Colors.primary,
-    textAlign: "center",
+    color: "#000000DE",
+    textAlign: "left",
   },
   addItemContainer: {
     flexDirection: "row",
@@ -48,30 +48,26 @@ export default StyleSheet.create({
     borderRadius: 8,
     flex: 1,
   },
-  list: {
-    flex: 1,
-  },
-  itemContainer: {
-    padding: 16,
-    marginBottom: 12,
-    backgroundColor: Colors.white,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Colors.borderLight,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 1,
-  },
-  itemInput: {
-    fontSize: 16,
-    color: Colors.text,
-    paddingVertical: 8,
-    borderBottomWidth: 0,
-    borderBottomColor: Colors.borderLight,
-  },
+
   disabledButton: {
     opacity: 0.6,
+  },
+
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  cancelContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cancel: {
+    fontFamily: Typography.fontFamily.RobotoRegular,
+    fontSize: 14,
+  },
+  circleContainer: {
+    marginLeft: 10,
   },
 });

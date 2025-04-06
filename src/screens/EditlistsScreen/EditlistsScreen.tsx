@@ -1,11 +1,10 @@
 import {
   View,
   Text,
-  Button,
   TextInput,
   FlatList,
-  Alert,
   SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -24,7 +23,9 @@ import styles from "./EditlistsScreen.style";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { RootStackParamList } from "../../types/navigation";
 import { generateUniqueId } from "../../helper/generateUniqueId";
-import CustomHeader from "../../components/CustomHeader";
+import RoundedButton from "../../components/RoundedButton";
+import IconBack from "../../assets/icons/iconBack.svg";
+import ChecklistItemsList from "../../components/ChecklistItemsList";
 
 type ShowCheckListNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -42,9 +43,7 @@ const EditlistsScreen = () => {
   const { data } = useAppSelector(selectMyCheckList);
   const dispatch = useAppDispatch();
 
-  const [newItemText, setNewItemText] = useState("");
   const [temporaryItems, setTemporaryItems] = useState<ChecklistItem[]>([]);
-  const [hasChanges, setHasChanges] = useState(false);
 
   const flatListRef = useRef<FlatList>(null);
   const lastInputRef = useRef<TextInput>(null);
@@ -86,8 +85,6 @@ const EditlistsScreen = () => {
 
     if (shouldAddNewItem) {
       setTemporaryItems((prev) => [...prev, newItem]);
-      setNewItemText("");
-      setHasChanges(true);
     }
 
     // Focus the new input after it's rendered
@@ -103,7 +100,6 @@ const EditlistsScreen = () => {
         item.itemId === itemId ? { ...item, name: newText } : item
       )
     );
-    setHasChanges(true);
   };
 
   const handleSaveChanges = () => {
@@ -122,43 +118,7 @@ const EditlistsScreen = () => {
       })
     );
 
-    setHasChanges(false);
     //navigation.push("ShowCheckList", { titleId: titleId });
-  };
-
-  const handleCancelChanges = () => {
-    if (checklist) {
-      setTemporaryItems([...checklist.items]);
-    }
-    setHasChanges(false);
-    Alert.alert("Changes reverted", "All edits have been cancelled");
-  };
-
-  if (!checklist) return <Text>List not found</Text>;
-
-  const renderItem = ({
-    item,
-    index,
-  }: {
-    item: ChecklistItem;
-    index: number;
-  }) => {
-    const isLastItem = index === temporaryItems.length - 1;
-
-    return (
-      <View style={styles.itemContainer}>
-        <TextInput
-          ref={isLastItem ? lastInputRef : null}
-          style={styles.itemInput}
-          value={item.name}
-          onChangeText={(text) => handleTextChange(item.itemId, text)}
-          placeholder="Edit item"
-          onSubmitEditing={handleAddCheckListItem}
-          returnKeyType="done"
-          multiline={false}
-        />
-      </View>
-    );
   };
 
   return (
@@ -168,46 +128,31 @@ const EditlistsScreen = () => {
         style={styles.container}
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0} // Adjust as needed
       >
-        <View>
-          <CustomHeader title={"Checklists"} showBackButton />
-          <Text style={styles.title}>{checklist.titleName}</Text>
-
-          <View style={styles.addItemContainer}>
-            <TextInput
-              value={newItemText}
-              onChangeText={setNewItemText}
-              placeholder="Enter new item"
-              style={styles.addItemInput}
-            />
-            <Button
-              title="Add"
-              onPress={handleAddCheckListItem}
-              disabled={!newItemText.trim()}
-            />
-            <Button title="DeleteAll" onPress={handleDeleteAllCheckListItem} />
+        <View style={{ flex: 1 }}>
+          {/* Header */}
+          <View style={styles.headerContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <View style={styles.cancelContainer}>
+                <IconBack height={25} width={25} />
+                <Text style={styles.cancel}>Cancel</Text>
+              </View>
+            </TouchableOpacity>
+            <RoundedButton title="Save" onButtonClick={handleSaveChanges} />
           </View>
-
-          <View style={styles.actionButtons}>
-            <Button
-              title="Cancel"
-              onPress={handleCancelChanges}
-              disabled={!hasChanges}
-              color="#ff4444"
-            />
-            <Button
-              title="Save All"
-              onPress={handleSaveChanges}
-              disabled={!hasChanges}
+          {checklist && <Text style={styles.title}>{checklist.titleName}</Text>}
+          <View style={{ flex: 1, flexGrow: 1 }}>
+            <ChecklistItemsList
+              items={temporaryItems}
+              onTextChange={handleTextChange}
+              onSubmitNewItem={handleAddCheckListItem}
+              flatListRef={flatListRef}
+              lastInputRef={lastInputRef}
             />
           </View>
-
-          <FlatList
-            data={temporaryItems}
-            style={styles.list}
-            keyExtractor={(item) => item.itemId}
-            ref={flatListRef}
-            renderItem={renderItem}
-          />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
