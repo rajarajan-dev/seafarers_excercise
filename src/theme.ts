@@ -1,6 +1,7 @@
 const Colors = {
   nav30: "#ECEEF0",
   grey600: "#AAAAAA",
+  green600: "#4F9B90",
   red500: "#E6767F",
   marlowBlue: "#005AA5",
   blue: "#0093BB",

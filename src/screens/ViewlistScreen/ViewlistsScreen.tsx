@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
   SectionList,
   TouchableOpacity,
-  Switch,
   SafeAreaView,
 } from "react-native";
 
@@ -15,14 +14,19 @@ import {
 import { ChecklistItem } from "../../types/CheckListTypes";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { toggleCheckListItemStatus } from "../../store/mychecklistSlice";
+import {
+  removeCheckListItem,
+  toggleCheckListItemStatus,
+} from "../../store/mychecklistSlice";
 import { RootStackParamList } from "../../types/navigation";
 import styles from "./ViewlistsScreen.style";
 import IconBack from "../../assets/icons/iconBack.svg";
-import RoundedButton from "../../components/RoundedButton";
 import RoundedButtonOutline from "../../components/RoundedButtonOutline";
 import LineSeparator from "../../components/LineSeparator";
 import IconDocument from "../../assets/icons/iconDocument.svg";
+import SwipeableSectionRow, {
+  SwipeableSectionRowRef,
+} from "../../components/SwipeableSectionRow";
 
 type ShowCheckListNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -35,11 +39,17 @@ interface Section {
 }
 
 const ViewlistsScreen = () => {
+  const [isScrollEnabled, setScrollEnabled] = useState(true);
   const navigation = useNavigation<ShowCheckListNavigationProp>();
   const { data } = useAppSelector((state) => state.mycheckList);
   const route = useRoute();
-  const { titleId } = route.params as { titleId: string };
+  //const { titleId } = route.params as { titleId: string };
+  //console.log("title Id " + titleId);
+  const titleId = "1743959502220-129";
   const dispatch = useAppDispatch();
+
+  const rowRefs = useRef(new Map<string, SwipeableSectionRowRef>());
+  const scrollRef = useRef<boolean>(true);
 
   const currentCategory = data.find((category) => category.titleId === titleId);
 
@@ -72,21 +82,47 @@ const ViewlistsScreen = () => {
     );
   };
 
+  const closeAllRows = () => {
+    rowRefs.current.forEach((ref) => ref?.close());
+  };
+
   const navigateToEdit = () => {
     navigation.navigate("Editlists", { titleId });
   };
 
   const renderItem = ({ item }: { item: ChecklistItem }) => (
-    <View style={styles.itemContainer}>
-      <View style={styles.circle}>
-        <IconDocument height={12} width={12} />
+    <SwipeableSectionRow
+      key={item.itemId + item.status}
+      ref={(ref) => {
+        if (ref) {
+          rowRefs.current.set(item.itemId, ref);
+        } else {
+          rowRefs.current.delete(item.itemId);
+        }
+      }}
+      onDelete={() => {
+        closeAllRows();
+        dispatch(
+          removeCheckListItem({ titleId: titleId, itemId: item.itemId })
+        );
+      }}
+      onToggle={() => {
+        closeAllRows();
+        toggleItemStatus(item.itemId);
+      }}
+      isTodo={item.status === "Todo"}
+      setScrolling={(enabled) => {
+        scrollRef.current = enabled;
+        setScrollEnabled(enabled);
+      }}
+    >
+      <View style={styles.itemContainer}>
+        <View style={styles.circle}>
+          <IconDocument height={12} width={12} />
+        </View>
+        <Text style={styles.itemText}>{item.name}</Text>
       </View>
-      <Text style={styles.itemText}>{item.name}</Text>
-      <Switch
-        value={item.status === "Done"}
-        onValueChange={() => toggleItemStatus(item.itemId)}
-      />
-    </View>
+    </SwipeableSectionRow>
   );
 
   // Custom section header renderer that hides empty titles
@@ -132,6 +168,7 @@ const ViewlistsScreen = () => {
           sections={sections}
           keyExtractor={(item) => item.itemId}
           renderItem={renderItem}
+          scrollEnabled={isScrollEnabled}
           renderSectionHeader={renderSectionHeader}
           ListFooterComponent={() => <LineSeparator />}
           ItemSeparatorComponent={() => <LineSeparator />}

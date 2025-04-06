@@ -11,7 +11,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Checklists">
+      <Stack.Navigator initialRouteName="Viewlists">
         <Stack.Screen
           name="Checklists"
           component={ChecklistsScreen}
