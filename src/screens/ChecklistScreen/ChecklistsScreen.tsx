@@ -58,34 +58,36 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
         style={{ marginTop: 38 }}
       />
 
-      <View style={{ height: 80, marginTop: 12 }}>
-        <View style={styles.ListRow}>
-          <View style={styles.contentPart}>
-            <AnimatedCircularProgress
-              ref={circularRef}
-              size={41}
-              width={5}
-              fill={progress}
-              tintColor={Colors.marlowBlue}
-              backgroundColor="transparent"
-              rotation={0}
-              lineCap="square"
-              duration={1000}
-              onAnimationComplete={() => {}}
-            >
-              {(fill: number) => {
-                return (
-                  <Text style={styles.progressText}>{Math.round(fill)}%</Text>
-                );
-              }}
-            </AnimatedCircularProgress>
-            <Text style={{ marginLeft: 12 }}>Review List </Text>
-          </View>
-          <View style={styles.arrowPart}>
-            <IconArrow width={15} height={15} fill={Colors.grey600} />
+      <TouchableOpacity onPress={() => navigation.navigate("PreDepartureDocs")}>
+        <View style={{ height: 80, marginTop: 12 }}>
+          <View style={styles.ListRow}>
+            <View style={styles.contentPart}>
+              <AnimatedCircularProgress
+                ref={circularRef}
+                size={41}
+                width={5}
+                fill={progress}
+                tintColor={Colors.marlowBlue}
+                backgroundColor="transparent"
+                rotation={0}
+                lineCap="square"
+                duration={1000}
+                onAnimationComplete={() => {}}
+              >
+                {(fill: number) => {
+                  return (
+                    <Text style={styles.progressText}>{Math.round(fill)}%</Text>
+                  );
+                }}
+              </AnimatedCircularProgress>
+              <Text style={{ marginLeft: 12 }}>Review List </Text>
+            </View>
+            <View style={styles.arrowPart}>
+              <IconArrow width={15} height={15} fill={Colors.grey600} />
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
 
       <TitleAndSubtitleSection
         title="My Checklists"

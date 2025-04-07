@@ -34,9 +34,7 @@ const ChecklistItemsList = ({
 
         return (
           <View style={styles.itemContainer}>
-            <View style={styles.circle}>
-              <IconDocument height={12} width={12} />
-            </View>
+            <IconDocument height={25} width={25} />
 
             <TextInput
               ref={isLastItem ? lastInputRef : null}

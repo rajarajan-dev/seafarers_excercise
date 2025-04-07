@@ -5,6 +5,7 @@ import ChecklistsScreen from "./screens/ChecklistScreen/ChecklistsScreen";
 import ViewlistsScreen from "./screens/MyChecklists/ViewlistScreen/ViewlistsScreen";
 import EditlistsScreen from "./screens/MyChecklists/EditlistsScreen/EditlistsScreen";
 import { RootStackParamList } from "./types/navigation";
+import ViewPreDepartureDocs from "./screens/PreDepartureDocs/ViewPreDepartureDocs";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -26,6 +27,11 @@ const AppNavigator: React.FC = () => {
           name="Editlists"
           component={EditlistsScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PreDepartureDocs"
+          component={ViewPreDepartureDocs}
+          options={{ headerShown: true }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -6,4 +6,5 @@ export type RootStackParamList = {
   Editlists: {
     titleId: string;
   };
+  PreDepartureDocs: undefined;
 };

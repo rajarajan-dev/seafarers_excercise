@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <path fill="none" stroke="#ffffff" stroke-width="2" d="M6,16 L16,16 L6,16 L6,16 Z M6,12 L18,12 L6,12 L6,12 Z M6,8 L11,8 L6,8 L6,8 Z M14,1 L14,8 L21,8 M3,23 L3,1 L15,1 L21,7 L21,23 L3,23 Z"/>
+<svg id="Component_366_4" data-name="Component 366 – 4" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <circle id="Ellipse_1157" data-name="Ellipse 1157" cx="10" cy="10" r="10" fill="#005aa5"/>
+  <path id="Path_41026" data-name="Path 41026" d="M9,2H5a1,1,0,0,0-.995,1L4,11a1,1,0,0,0,.995,1H11a1,1,0,0,0,1-1V5Zm1,8H6V9h4Zm0-2H6V7h4ZM8.5,5.5V2.75L11.25,5.5Z" transform="translate(2 3)" fill="#eceef0"/>
 </svg>
