@@ -2,8 +2,8 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import ChecklistsScreen from "./screens/ChecklistScreen/ChecklistsScreen";
-import ViewlistsScreen from "./screens/ViewlistScreen/ViewlistsScreen";
-import EditlistsScreen from "./screens/EditlistsScreen/EditlistsScreen";
+import ViewlistsScreen from "./screens/MyChecklists/ViewlistScreen/ViewlistsScreen";
+import EditlistsScreen from "./screens/MyChecklists/EditlistsScreen/EditlistsScreen";
 import { RootStackParamList } from "./types/navigation";
 
 const Stack = createStackNavigator<RootStackParamList>();

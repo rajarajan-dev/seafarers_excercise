@@ -12,20 +12,20 @@ import { useNavigation, useRoute } from "@react-navigation/core";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../hooks/stateManagementHooks";
+} from "../../../hooks/stateManagementHooks";
 import {
   removeAllCheckListItems,
   selectMyCheckList,
   updateMultipleCheckListItems,
-} from "../../store/mychecklistSlice";
-import { ChecklistItem } from "../../types/CheckListTypes";
+} from "../../../store/mychecklistSlice";
+import { ChecklistItem } from "../../../types/CheckListTypes";
 import styles from "./EditlistsScreen.style";
 import { KeyboardAvoidingView, Platform } from "react-native";
-import { RootStackParamList } from "../../types/navigation";
-import { generateUniqueId } from "../../helper/generateUniqueId";
-import RoundedButton from "../../components/RoundedButton";
-import IconBack from "../../assets/icons/iconBack.svg";
-import ChecklistItemsList from "../../components/ChecklistItemsList";
+import { RootStackParamList } from "../../../types/navigation";
+import { generateUniqueId } from "../../../helper/generateUniqueId";
+import RoundedButton from "../../../components/RoundedButton";
+import IconBack from "../../../assets/icons/iconBack.svg";
+import ChecklistItemsList from "../../../components/ChecklistItemsList";
 
 type ShowCheckListNavigationProp = StackNavigationProp<
   RootStackParamList,

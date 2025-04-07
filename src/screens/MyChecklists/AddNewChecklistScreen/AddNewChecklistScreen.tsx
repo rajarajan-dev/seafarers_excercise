@@ -1,20 +1,20 @@
 import { View, TouchableOpacity, Alert } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 
-import CircularIcon from "../../components/CircularIcon";
-import useStatusBarHeight from "../../hooks/useStatusBarHeight";
-import { styles } from "./AddNewChecklistScreen.style";
+import CircularIcon from "../../../components/CircularIcon";
+import useStatusBarHeight from "../../../hooks/useStatusBarHeight";
 import ClearableInput, {
   ClearableInputRef,
-} from "../../components/ClearableInput";
-import RoundedButton from "../../components/RoundedButton";
+} from "../../../components/ClearableInput";
+import RoundedButton from "../../../components/RoundedButton";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../types/navigation";
+import { RootStackParamList } from "../../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
-import { useAppDispatch } from "../../hooks/stateManagementHooks";
-import { ChecklistCategory } from "../../types/CheckListTypes";
-import { generateUniqueId } from "../../helper/generateUniqueId";
-import { addCheckListCategory } from "../../store/mychecklistSlice";
+import { useAppDispatch } from "../../../hooks/stateManagementHooks";
+import { ChecklistCategory } from "../../../types/CheckListTypes";
+import { generateUniqueId } from "../../../helper/generateUniqueId";
+import { addCheckListCategory } from "../../../store/mychecklistSlice";
+import { styles } from "./AddNewChecklistScreen.style";
 
 interface Props {
   setModalVisible: (visible: boolean) => void;

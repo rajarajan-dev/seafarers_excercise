@@ -10,23 +10,23 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../hooks/stateManagementHooks";
-import { ChecklistItem } from "../../types/CheckListTypes";
+} from "../../../hooks/stateManagementHooks";
+import { ChecklistItem } from "../../../types/CheckListTypes";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   removeCheckListItem,
   toggleCheckListItemStatus,
-} from "../../store/mychecklistSlice";
-import { RootStackParamList } from "../../types/navigation";
+} from "../../../store/mychecklistSlice";
+import { RootStackParamList } from "../../../types/navigation";
 import styles from "./ViewlistsScreen.style";
-import IconBack from "../../assets/icons/iconBack.svg";
-import RoundedButtonOutline from "../../components/RoundedButtonOutline";
-import LineSeparator from "../../components/LineSeparator";
-import IconDocument from "../../assets/icons/iconDocument.svg";
+import IconBack from "../../../assets/icons/iconBack.svg";
+import RoundedButtonOutline from "../../../components/RoundedButtonOutline";
+import LineSeparator from "../../../components/LineSeparator";
+import IconDocument from "../../../assets/icons/iconDocument.svg";
 import SwipeableSectionRow, {
   SwipeableSectionRowRef,
-} from "../../components/SwipeableSectionRow";
+} from "../../../components/SwipeableSectionRow";
 
 type ShowCheckListNavigationProp = StackNavigationProp<
   RootStackParamList,

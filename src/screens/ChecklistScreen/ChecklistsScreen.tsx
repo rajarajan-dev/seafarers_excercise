@@ -20,7 +20,7 @@ import {
 import IconAdd from "../../assets/icons/iconAdd.svg";
 import checklistData from "../../mocks/ChecklistCategory";
 import ChecklistItemRenderer from "../../components/ChecklistItemRenderer";
-import AddNewChecklistScreen from "../AddNewChecklistScreen/AddNewChecklistScreen";
+import AddNewChecklistScreen from "../MyChecklists/AddNewChecklistScreen/AddNewChecklistScreen";
 import { BlurView } from "@react-native-community/blur";
 import {
   removeCheckListCategory,
