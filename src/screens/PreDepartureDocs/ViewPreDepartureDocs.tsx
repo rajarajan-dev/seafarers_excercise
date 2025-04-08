@@ -16,7 +16,6 @@ import {
 } from "../../store/preDepartureDocSlice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../hooks/stateManagementHooks";
-import DocumentRow from "../../components/DocumentRow";
 import SwipeablePreDepartureSectionRow, {
   SwipeablePreDepartureSectionRowRef,
 } from "../../components/SwipeablePreDepartureSectionRow";
@@ -81,9 +80,11 @@ const ViewPreDepartureDocs = () => {
     };
 
     const renderStatusIcon = () => {
+      if (item.type == "AttentionRequired") {
+        return <IconPending width={20} height={20} />;
+      }
+
       switch (item.status) {
-        case "Pending":
-          return <IconPending width={20} height={20} />;
         case "Done":
           return <IconDone width={20} height={20} />;
         case "Skipped":
@@ -92,8 +93,6 @@ const ViewPreDepartureDocs = () => {
           return <IconDocument width={20} height={20} />;
       }
     };
-
-    
 
     return (
       <SwipeablePreDepartureSectionRow

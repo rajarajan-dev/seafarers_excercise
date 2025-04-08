@@ -30,13 +30,17 @@ const SwipeablePreDepartureSectionRow = forwardRef<
   SwipeablePreDepartureSectionRowRef,
   Props
 >(({ item, children, onStatusChange, setScrolling }, ref) => {
+  // Disable swipe for AttentionRequired/Submitted status
+  const isDisabled =
+    item.type === "AttentionRequired" && item.status === "Submitted";
+
   const actionCount =
-    item.type === "Optional" && item.status === "Todo" ? 2 : 1;
+    !isDisabled && item.type === "Optional" && item.status === "Todo" ? 2 : 1;
+
   const THRESHOLD = ACTION_WIDTH * actionCount;
   const pan = useRef(new Animated.ValueXY()).current;
   const actionTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Clean up any pending timeouts when component unmounts
   React.useEffect(() => {
     return () => {
       if (actionTimeout.current) {
@@ -49,7 +53,7 @@ const SwipeablePreDepartureSectionRow = forwardRef<
     Animated.timing(pan, {
       toValue: { x: distance, y: 0 },
       duration: 200,
-      useNativeDriver: true, // Changed to true for better performance
+      useNativeDriver: true,
     }).start(() => {
       setScrolling(true);
     });
@@ -57,16 +61,18 @@ const SwipeablePreDepartureSectionRow = forwardRef<
 
   const panResponder = useRef(
     PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponder: () => !isDisabled,
       onMoveShouldSetPanResponder: (_evt, gestureState) =>
-        Math.abs(gestureState.dx) > Math.abs(gestureState.dy),
+        !isDisabled && Math.abs(gestureState.dx) > Math.abs(gestureState.dy),
       onPanResponderMove: (_evt, gestureState) => {
-        if (gestureState.dx < 0) {
+        if (!isDisabled && gestureState.dx < 0) {
           setScrolling(false);
           pan.setValue({ x: Math.max(gestureState.dx, -THRESHOLD), y: 0 });
         }
       },
       onPanResponderRelease: (_evt, gestureState) => {
+        if (isDisabled) return;
+
         if (gestureState.dx < -THRESHOLD / 2) {
           release(-THRESHOLD);
         } else {
@@ -92,65 +98,65 @@ const SwipeablePreDepartureSectionRow = forwardRef<
     extrapolate: "clamp",
   });
 
-  // Determine action button
+  // Determine action button (disabled for AttentionRequired/Submitted)
   let actionLabel: string | null = null;
   let icon = null;
   let targetStatus: DocumentStatus | null = null;
 
-  if (
-    (item.type === "Mandatory" || item.type === "Optional") &&
-    item.status === "Todo"
-  ) {
-    actionLabel = "Done";
-    icon = <IconCheck width={24} height={24} fill="#fff" />;
-    targetStatus = "Done";
-  } else if (item.type === "AttentionRequired" && item.status === "Todo") {
-    actionLabel = "Submitted";
-    icon = <IconCheck width={24} height={24} fill="#00f" />;
-    targetStatus = "Submitted";
-  } else if (
-    (item.type === "Mandatory" || item.type === "Optional") &&
-    (item.status === "Done" || item.status === "Skipped")
-  ) {
-    actionLabel = "Uncheck";
-    icon = <IconUndo width={24} height={24} fill="#fff" />;
-    targetStatus = "Todo";
+  if (!isDisabled) {
+    if (
+      (item.type === "Mandatory" || item.type === "Optional") &&
+      item.status === "Todo"
+    ) {
+      actionLabel = "Done";
+      icon = <IconCheck width={24} height={24} fill="#fff" />;
+      targetStatus = "Done";
+    } else if (
+      (item.type === "Mandatory" || item.type === "Optional") &&
+      (item.status === "Done" || item.status === "Skipped")
+    ) {
+      actionLabel = "Uncheck";
+      icon = <IconUndo width={24} height={24} fill="#fff" />;
+      targetStatus = "Todo";
+    } else if (item.type === "AttentionRequired" && item.status === "Todo") {
+      actionLabel = "Submitted";
+      icon = <IconCheck width={24} height={24} fill="#00f" />;
+      targetStatus = "Submitted";
+    }
   }
 
   const handleAction = () => {
-    if (!targetStatus) return;
+    if (isDisabled || !targetStatus) return;
 
     release(0);
 
-    // Clear any pending timeout
     if (actionTimeout.current) {
       clearTimeout(actionTimeout.current);
     }
 
-    // Schedule the status change after animation completes
     actionTimeout.current = setTimeout(() => {
       onStatusChange(targetStatus!);
     }, 200);
   };
 
   const handleSkip = () => {
+    if (isDisabled) return;
+
     release(0);
 
-    // Clear any pending timeout
     if (actionTimeout.current) {
       clearTimeout(actionTimeout.current);
     }
 
-    // Schedule the status change after animation completes
     actionTimeout.current = setTimeout(() => {
       onStatusChange("Skipped");
     }, 200);
   };
 
   return (
-    <View style={styles.wrapper}>
-      {/* Swipe Action */}
-      {targetStatus && (
+    <View style={[styles.wrapper, isDisabled && styles.disabledWrapper]}>
+      {/* Swipe Action - only show if not disabled */}
+      {!isDisabled && targetStatus && (
         <Animated.View
           style={[
             styles.actionsContainer,
@@ -182,7 +188,11 @@ const SwipeablePreDepartureSectionRow = forwardRef<
 
       {/* Swipeable Content */}
       <Animated.View
-        style={[styles.item, { transform: [{ translateX: pan.x }] }]}
+        style={[
+          styles.item,
+          { transform: [{ translateX: pan.x }] },
+          isDisabled && styles.disabledItem,
+        ]}
         {...panResponder.panHandlers}
       >
         {children}
@@ -198,9 +208,15 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "transparent",
   },
+  disabledWrapper: {
+    opacity: 0.6,
+  },
   item: {
     width: "100%",
     backgroundColor: "transparent",
+  },
+  disabledItem: {
+    backgroundColor: "#f5f5f5", // Light gray background for disabled items
   },
   actionsContainer: {
     position: "absolute",

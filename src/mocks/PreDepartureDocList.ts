@@ -16,8 +16,8 @@ const PreDepartureDocList: { categories: Category[] } = {
           docNumber: "",
           issueDate: "2022-04-24",
           expiryDate: "2027-04-24",
-          type: "Mandatory" as DocumentType,
-          status: "Pending" as DocumentStatus,
+          type: "AttentionRequired" as DocumentType,
+          status: "Todo" as DocumentStatus,
         },
         {
           id: "gmdss-cert",
