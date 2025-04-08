@@ -1,5 +1,5 @@
 import { SectionList, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GradientProgressBar from "../../components/GradientProgressBar";
 import HorizontalList from "../../components/HorizontalList";
@@ -8,14 +8,26 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import IconBack from "../../assets/icons/iconBack.svg";
-import { DocumentRow } from "../../components/DocumentRow";
-import PreDepartureDocList from "../../mocks/PreDepartureDocList";
+
 import {
   initializeIfEmpty,
   selectAllDocuments,
+  updateDocumentStatus,
 } from "../../store/preDepartureDocSlice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../hooks/stateManagementHooks";
+import DocumentRow from "../../components/DocumentRow";
+import SwipeablePreDepartureSectionRow, {
+  SwipeablePreDepartureSectionRowRef,
+} from "../../components/SwipeablePreDepartureSectionRow";
+import { DocumentItem } from "../../types/PreDepartureDocsTypes";
+
+import IconPending from "../../assets/icons/iconExclamation.svg";
+import IconDocument from "../../assets/icons/iconDocument.svg";
+import IconDone from "../../assets/icons/iconDoneBlue.svg";
+import IconSkipped from "../../assets/icons/iconSkip.svg";
+import { formatDateToDDMMYY } from "../../helper/formatDateToDDMMYY";
+import LineSeparator from "../../components/LineSeparator";
 
 type ViewPreDepartureDocsProp = StackNavigationProp<
   RootStackParamList,
@@ -42,6 +54,10 @@ const ViewPreDepartureDocs = () => {
   );
   const completedDocs = data.filter((doc) => doneStatuses.includes(doc.status));
 
+  const [isScrollEnabled, setScrollEnabled] = useState(true);
+  const rowRefs = useRef(new Map<string, SwipeablePreDepartureSectionRowRef>());
+  const scrollRef = useRef<boolean>(true);
+
   const sections = [
     {
       title: "Pending",
@@ -53,9 +69,77 @@ const ViewPreDepartureDocs = () => {
     },
   ];
 
+  const showEmptyState = sections.length === 0;
+
   useEffect(() => {
     dispatch(initializeIfEmpty());
   }, [dispatch]);
+
+  const renderItem = ({ item }: { item: DocumentItem }) => {
+    const handleStatusChange = (newStatus: DocumentItem["status"]) => {
+      dispatch(updateDocumentStatus({ id: item.id, newStatus }));
+    };
+
+    const renderStatusIcon = () => {
+      switch (item.status) {
+        case "Pending":
+          return <IconPending width={20} height={20} />;
+        case "Done":
+          return <IconDone width={20} height={20} />;
+        case "Skipped":
+          return <IconSkipped width={20} height={20} />;
+        default:
+          return <IconDocument width={20} height={20} />;
+      }
+    };
+
+    
+
+    return (
+      <SwipeablePreDepartureSectionRow
+        key={item.id + item.status}
+        ref={(ref) => {
+          if (ref) {
+            rowRefs.current.set(item.id, ref);
+          } else {
+            rowRefs.current.delete(item.id);
+          }
+        }}
+        setScrolling={(enabled) => {
+          scrollRef.current = enabled;
+          setScrollEnabled(enabled);
+        }}
+        item={item}
+        onStatusChange={handleStatusChange}
+      >
+        <View style={styles.card}>
+          <View style={styles.rowTop}>
+            <View style={styles.iconContainer}>{renderStatusIcon()}</View>
+            <View style={styles.detailsContainer}>
+              <View style={styles.titleRow}>
+                <Text style={styles.title}>{item.name}</Text>
+                {item.type === "Optional" && (
+                  <Text style={styles.optional}>(Optional)</Text>
+                )}
+              </View>
+              <Text style={styles.subText}>
+                {item.nationality}, {item.docNumber}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.dateRow}>
+            <Text style={styles.subText}>
+              Issue date: {formatDateToDDMMYY(item.issueDate)}
+            </Text>
+            <Text style={styles.subText}>
+              Exp. date: {formatDateToDDMMYY(item.expiryDate)}
+            </Text>
+          </View>
+        </View>
+      </SwipeablePreDepartureSectionRow>
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -87,15 +171,21 @@ const ViewPreDepartureDocs = () => {
         <SectionList
           sections={sections}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <DocumentRow item={item} categoryId={"pre-departure"} />
-          )}
+          renderItem={renderItem}
+          scrollEnabled={isScrollEnabled}
           renderSectionHeader={({ section: { title } }) => (
             <Text style={{ fontWeight: "bold", fontSize: 16, marginTop: 10 }}>
               {title}
             </Text>
           )}
           contentContainerStyle={{ paddingBottom: 20 }}
+          ListFooterComponent={() => <LineSeparator />}
+          ItemSeparatorComponent={() => <LineSeparator />}
+          ListEmptyComponent={
+            showEmptyState ? (
+              <Text style={styles.emptyText}>No items found</Text>
+            ) : null
+          }
         />
       </View>
     </SafeAreaView>
