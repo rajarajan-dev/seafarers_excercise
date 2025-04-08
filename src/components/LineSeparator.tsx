@@ -6,8 +6,8 @@ const LineSeparator = () => {
   return (
     <View
       style={{
-        height: 2,
-        backgroundColor: Colors.nav30,
+        height: 0.3,
+        backgroundColor: Colors.separator,
       }}
     />
   );

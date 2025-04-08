@@ -1,5 +1,5 @@
 import { SectionList, Text, TouchableOpacity, View } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GradientProgressBar from "../../components/GradientProgressBar";
 import HorizontalList from "../../components/HorizontalList";
@@ -25,8 +25,14 @@ import IconPending from "../../assets/icons/iconExclamation.svg";
 import IconDocument from "../../assets/icons/iconDocument.svg";
 import IconDone from "../../assets/icons/iconDoneBlue.svg";
 import IconSkipped from "../../assets/icons/iconSkip.svg";
-import { formatDateToDDMMYY } from "../../helper/formatDateToDDMMYY";
+import IconPendingApproval from "../../assets/icons/iconApprovalPending.svg";
+
+import {
+  formatDate,
+  formatDateToDDMMYY,
+} from "../../helper/formatDateToDDMMYY";
 import LineSeparator from "../../components/LineSeparator";
+import { Colors, Typography } from "../../theme";
 
 type ViewPreDepartureDocsProp = StackNavigationProp<
   RootStackParamList,
@@ -80,17 +86,21 @@ const ViewPreDepartureDocs = () => {
     };
 
     const renderStatusIcon = () => {
-      if (item.type == "AttentionRequired") {
-        return <IconPending width={20} height={20} />;
+      if (item.type == "AttentionRequired" && item.status === "Todo") {
+        return <IconPending width={24} height={24} />;
+      }
+
+      if (item.type == "AttentionRequired" && item.status === "Submitted") {
+        return <IconPendingApproval width={24} height={24} />;
       }
 
       switch (item.status) {
         case "Done":
-          return <IconDone width={20} height={20} />;
+          return <IconDone width={24} height={24} />;
         case "Skipped":
-          return <IconSkipped width={20} height={20} />;
+          return <IconSkipped width={24} height={24} />;
         default:
-          return <IconDocument width={20} height={20} />;
+          return <IconDocument width={24} height={24} />;
       }
     };
 
@@ -121,19 +131,20 @@ const ViewPreDepartureDocs = () => {
                   <Text style={styles.optional}>(Optional)</Text>
                 )}
               </View>
-              <Text style={styles.subText}>
-                {item.nationality}, {item.docNumber}
-              </Text>
+              {item.nationality && item.docNumber ? (
+                <Text style={styles.subText}>
+                  {item.nationality}, {item.docNumber}
+                </Text>
+              ) : null}
+              <View style={styles.dateRow}>
+                <Text style={styles.optional}>
+                  Issue date: {formatDate(item.issueDate)}
+                </Text>
+                <Text style={styles.optional}>
+                  Exp. date: {formatDate(item.expiryDate)}
+                </Text>
+              </View>
             </View>
-          </View>
-
-          <View style={styles.dateRow}>
-            <Text style={styles.subText}>
-              Issue date: {formatDateToDDMMYY(item.issueDate)}
-            </Text>
-            <Text style={styles.subText}>
-              Exp. date: {formatDateToDDMMYY(item.expiryDate)}
-            </Text>
           </View>
         </View>
       </SwipeablePreDepartureSectionRow>
@@ -141,51 +152,85 @@ const ViewPreDepartureDocs = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, marginHorizontal: 10 }}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={{ flex: 1 }}
-          >
-            <View style={styles.cancelContainer}>
-              <IconBack height={25} width={25} />
-              <Text style={styles.headerText}>
-                Pre-Departure Documents List
-              </Text>
-            </View>
-          </TouchableOpacity>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <View style={{ flex: 1 }}>
+        <View style={{ paddingHorizontal: 16 }}>
+          <View style={styles.headerContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{ flex: 1 }}
+            >
+              <View style={styles.cancelContainer}>
+                <IconBack height={25} width={25} />
+                <Text style={styles.headerText}>
+                  Pre-Departure Documents List
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <GradientProgressBar progress={progress} height={8} />
+          </View>
+          <HorizontalList />
         </View>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: Colors.nav30,
+          }}
+        >
+          <Text
+            style={{
+              margin: 16,
+              fontFamily: Typography.fontFamily.RobotoItalic,
+              fontSize: 12,
+              fontStyle: "italic",
+            }}
+          >
+            Items should only be ticked off once the corresponding original
+            paper document has been added to your Blue Pouch in preparation for
+            departure.
+          </Text>
 
-        <GradientProgressBar progress={progress} height={10} />
-        <HorizontalList />
-        <Text style={{ marginVertical: 10 }}>
-          Items should only be ticked off once the corresponding original paper
-          document has been added to your Blue Pouch in preparation for
-          departure.
-        </Text>
-
-        <SectionList
-          sections={sections}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          scrollEnabled={isScrollEnabled}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={{ fontWeight: "bold", fontSize: 16, marginTop: 10 }}>
-              {title}
-            </Text>
-          )}
-          contentContainerStyle={{ paddingBottom: 20 }}
-          ListFooterComponent={() => <LineSeparator />}
-          ItemSeparatorComponent={() => <LineSeparator />}
-          ListEmptyComponent={
-            showEmptyState ? (
-              <Text style={styles.emptyText}>No items found</Text>
-            ) : null
-          }
-        />
+          <SectionList
+            sections={sections}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            scrollEnabled={isScrollEnabled}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text
+                style={{
+                  fontFamily: Typography.fontFamily.RobotoBold,
+                  fontSize: 14,
+                  marginLeft: 24,
+                  marginTop: 10,
+                  marginBottom: 8, // Add some bottom margin
+                  backgroundColor: Colors.nav30, // Match background
+                  zIndex: 1, // Ensure header stays above items
+                }}
+              >
+                {title}
+              </Text>
+            )}
+            contentContainerStyle={{
+              paddingBottom: 30, // Increased padding
+              paddingTop: 8, // Add some top padding
+            }}
+            ListFooterComponent={() => (
+              <View style={{ height: 60 }} /> // Footer spacer
+            )}
+            ItemSeparatorComponent={() => <LineSeparator />}
+            ListEmptyComponent={
+              showEmptyState ? (
+                <Text style={styles.emptyText}>No items found</Text>
+              ) : null
+            }
+            stickySectionHeadersEnabled={false}
+            style={{ flex: 1 }} // Ensure SectionList takes full height
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

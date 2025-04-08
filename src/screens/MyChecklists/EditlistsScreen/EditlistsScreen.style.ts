@@ -5,7 +5,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.nav30,
   },
   title: {
     fontFamily: Typography.fontFamily.RobotoBold,

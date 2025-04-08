@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import IconExclamation from "../assets/icons/iconExclamation.svg";
+import { Colors, Typography } from "../theme";
 
 const HorizontalList = () => {
   // Set first item as selected by default
@@ -42,8 +43,8 @@ const HorizontalList = () => {
             <View style={styles.itemContent}>
               {item.hasAlert && (
                 <IconExclamation
-                  height={16}
-                  width={16}
+                  height={12}
+                  width={12}
                   color="#FF0000"
                   style={styles.alertIcon}
                 />
@@ -71,7 +72,7 @@ const HorizontalList = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: { marginVertical: 25 },
   scrollContainer: {},
   itemContainer: {
     paddingHorizontal: 5,
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   selectedItem: {
-    borderBottomColor: "#005AA5",
+    color: Colors.marlowBlue,
   },
   itemContent: {
     flexDirection: "row",
@@ -96,14 +97,16 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 14,
     color: "#333",
-    fontWeight: "500",
+    fontFamily: Typography.fontFamily.RobotoBold,
   },
   disabledText: {
-    color: "#999",
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.RobotoMedium,
+    color: Colors.nav500,
   },
   selectedText: {
-    color: "#005AA5",
-    fontWeight: "600",
+    color: Colors.marlowBlue,
+    fontFamily: Typography.fontFamily.RobotoBold,
   },
   selectionIndicator: {
     position: "absolute",
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 2,
-    backgroundColor: "#005AA5",
+    backgroundColor: Colors.marlowBlue,
   },
 });
 

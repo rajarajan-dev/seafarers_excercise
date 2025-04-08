@@ -4,7 +4,7 @@ import { Colors, Typography } from "../../../theme";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.nav30,
     padding: 16,
   },
   header: {

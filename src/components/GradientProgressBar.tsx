@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { View, Animated, StyleSheet, Text } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import MaskedView from "@react-native-masked-view/masked-view";
+import { Colors, Typography } from "../theme";
 
 const GradientProgressBar = ({
   progress = 50,
@@ -84,9 +85,9 @@ const styles = StyleSheet.create({
   },
   background: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#E0E0E0",
-    borderWidth: 1,
-    borderColor: "#005AA5",
+    backgroundColor: "transparent",
+    borderWidth: 0.8,
+    borderColor: Colors.marlowBlue,
     borderStyle: "dashed",
   },
   labelContainer: {
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: 12,
     fontWeight: "500",
+    fontFamily: Typography.fontFamily.RobotoRegular,
     color: "#333",
   },
 });
