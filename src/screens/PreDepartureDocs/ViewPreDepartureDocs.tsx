@@ -1,5 +1,5 @@
 import { SectionList, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GradientProgressBar from "../../components/GradientProgressBar";
 import HorizontalList from "../../components/HorizontalList";
@@ -10,6 +10,12 @@ import { useNavigation } from "@react-navigation/native";
 import IconBack from "../../assets/icons/iconBack.svg";
 import { DocumentRow } from "../../components/DocumentRow";
 import PreDepartureDocList from "../../mocks/PreDepartureDocList";
+import {
+  initializeIfEmpty,
+  selectAllDocuments,
+} from "../../store/preDepartureDocSlice";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../hooks/stateManagementHooks";
 
 type ViewPreDepartureDocsProp = StackNavigationProp<
   RootStackParamList,
@@ -18,23 +24,23 @@ type ViewPreDepartureDocsProp = StackNavigationProp<
 
 const ViewPreDepartureDocs = () => {
   const navigation = useNavigation<ViewPreDepartureDocsProp>();
+  const dispatch = useDispatch();
+  const data = useAppSelector(selectAllDocuments);
 
-  const categories = PreDepartureDocList.categories;
-  const allDocs = categories.flatMap((cat) => cat.documents);
-  const doneCount = allDocs.filter((doc) => doc.status === "Done").length;
+  const doneCount = data.filter(
+    (doc) => doc.status === "Done" || doc.status === "Skipped"
+  ).length;
 
   const progress =
-    allDocs.length > 0 ? Math.round((doneCount / allDocs.length) * 100) : 0;
+    data.length > 0 ? Math.round((doneCount / data.length) * 100) : 0;
 
   const pendingStatuses = ["Submitted", "Pending", "Todo"];
   const doneStatuses = ["Done", "Skipped"];
 
-  const pendingDocs = allDocs.filter((doc) =>
+  const pendingDocs = data.filter((doc) =>
     pendingStatuses.includes(doc.status)
   );
-  const completedDocs = allDocs.filter((doc) =>
-    doneStatuses.includes(doc.status)
-  );
+  const completedDocs = data.filter((doc) => doneStatuses.includes(doc.status));
 
   const sections = [
     {
@@ -46,6 +52,10 @@ const ViewPreDepartureDocs = () => {
       data: completedDocs,
     },
   ];
+
+  useEffect(() => {
+    dispatch(initializeIfEmpty());
+  }, [dispatch]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

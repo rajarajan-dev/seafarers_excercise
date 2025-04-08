@@ -1,73 +1,45 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  ChecklistState,
-  DocumentStatus,
-  DocumentItem,
-} from "./../types/PreDepartureDocsTypes";
+import PreDepartureDocList from "../mocks/PreDepartureDocList"; // path as needed
+import { DocumentItem, DocumentStatus } from "../types/PreDepartureDocsTypes";
+import { RootState } from "./store";
 
-const initialState: ChecklistState = {
-  categories: [], // Will be populated by API or mock data
+// ... DocumentType, DocumentStatus, DocumentItem definitions
+
+interface PreDepartureDocsState {
+  documents: DocumentItem[];
+}
+
+const initialState: PreDepartureDocsState = {
+  documents: [],
 };
 
 const preDepartureDocSlice = createSlice({
-  name: "checklist",
+  name: "preDepartureDocs",
   initialState,
   reducers: {
-    setCategories(state, action: PayloadAction<ChecklistState["categories"]>) {
-      state.categories = action.payload;
+    setDocuments(state, action: PayloadAction<DocumentItem[]>) {
+      state.documents = action.payload;
     },
     updateDocumentStatus(
       state,
-      action: PayloadAction<{
-        categoryId: string;
-        documentId: string;
-        newStatus: DocumentStatus;
-      }>
+      action: PayloadAction<{ id: string; newStatus: DocumentStatus }>
     ) {
-      const { categoryId, documentId, newStatus } = action.payload;
-      const category = state.categories.find((cat) => cat.id === categoryId);
-      if (!category) return;
-
-      const doc = category.documents.find((d) => d.id === documentId);
-      if (!doc) return;
-
-      // AttentionRequired logic
-      if (doc.type === "AttentionRequired" && newStatus === "Submitted") {
-        doc.status = "Pending";
-        return;
-      }
-
-      // Allow updates for other types
-      if (doc.status === "Pending") return; // No actions allowed
-
-      doc.status = newStatus;
+      const doc = state.documents.find((d) => d.id === action.payload.id);
+      if (doc) doc.status = action.payload.newStatus;
     },
-
-    validateAttentionDocument(
-      state,
-      action: PayloadAction<{
-        categoryId: string;
-        documentId: string;
-        newType: "Mandatory" | "Optional";
-      }>
-    ) {
-      const { categoryId, documentId, newType } = action.payload;
-      const category = state.categories.find((cat) => cat.id === categoryId);
-      if (!category) return;
-
-      const doc = category.documents.find((d) => d.id === documentId);
-      if (!doc) return;
-
-      doc.type = newType;
-      doc.status = "None"; // Reset so user can take action now
+    initializeIfEmpty(state) {
+      if (state.documents.length === 0) {
+        const dummyDocs = PreDepartureDocList.categories[0];
+        state.documents = dummyDocs.documents;
+      }
     },
   },
 });
 
-export const {
-  setCategories,
-  updateDocumentStatus,
-  validateAttentionDocument,
-} = preDepartureDocSlice.actions;
-
+export const { setDocuments, updateDocumentStatus, initializeIfEmpty } =
+  preDepartureDocSlice.actions;
 export default preDepartureDocSlice.reducer;
+
+// In preDepartureDocSlice.ts or selectors.ts
+export const selectAllDocuments = (state: RootState) =>
+  state.preDepartureDocList.documents;

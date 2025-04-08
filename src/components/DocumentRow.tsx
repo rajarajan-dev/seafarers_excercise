@@ -1,6 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
+import { useDispatch } from "react-redux";
 import { DocumentItem, DocumentStatus } from "../types/PreDepartureDocsTypes";
+import { updateDocumentStatus } from "../store/preDepartureDocSlice"; // adjust path if needed
+
 import IconPending from "../assets/icons/iconExclamation.svg";
 import IconDocument from "../assets/icons/iconDocument.svg";
 import IconDone from "../assets/icons/iconDoneBlue.svg";
@@ -12,6 +15,12 @@ interface Props {
 }
 
 export const DocumentRow: React.FC<Props> = ({ item }) => {
+  const dispatch = useDispatch();
+
+  const handleAction = (newStatus: DocumentStatus) => {
+    dispatch(updateDocumentStatus({ id: item.id, newStatus }));
+  };
+
   const renderStatusIcon = () => {
     switch (item.status) {
       case "Pending":
@@ -28,7 +37,6 @@ export const DocumentRow: React.FC<Props> = ({ item }) => {
   const renderAction = () => {
     const { type, status } = item;
 
-    // Pending
     if (status === "Todo") {
       if (type === "Mandatory") {
         return <Button title="Done" onPress={() => handleAction("Done")} />;
@@ -50,7 +58,6 @@ export const DocumentRow: React.FC<Props> = ({ item }) => {
       }
     }
 
-    // AttentionRequired & Submitted => show greyed out row, no action
     if (status === "Submitted" && type === "AttentionRequired") {
       return (
         <Text style={{ color: "#aaa", fontStyle: "italic" }}>
@@ -59,7 +66,6 @@ export const DocumentRow: React.FC<Props> = ({ item }) => {
       );
     }
 
-    // Completed
     if (status === "Done" || status === "Skipped") {
       if (type === "Mandatory" || type === "Optional") {
         return <Button title="Uncheck" onPress={() => handleAction("Todo")} />;
@@ -67,11 +73,6 @@ export const DocumentRow: React.FC<Props> = ({ item }) => {
     }
 
     return null;
-  };
-
-  const handleAction = (newStatus: DocumentStatus) => {
-    console.log(`Action: ${newStatus} for item ${item.name}`);
-    // Replace this with update logic (dispatch Redux, call prop, etc.)
   };
 
   return (
@@ -99,6 +100,7 @@ export const DocumentRow: React.FC<Props> = ({ item }) => {
           Exp. date: {formatDate(item.expiryDate)}
         </Text>
       </View>
+
       <View>{renderAction()}</View>
     </View>
   );
@@ -115,7 +117,7 @@ const formatDate = (date?: string) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#d0e7f9", // Light blue
+    backgroundColor: "#d0e7f9",
     padding: 12,
     borderRadius: 8,
     marginVertical: 6,
