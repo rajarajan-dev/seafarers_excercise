@@ -4,6 +4,7 @@ import mychecklistSlice from "./mychecklistSlice";
 import reactotron from "../../ReactotronConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persistReducer, persistStore } from "redux-persist";
+import preDepartureDocSlice from "./preDepartureDocSlice";
 
 const persistConfig = {
   key: "root",
@@ -15,6 +16,7 @@ const persistedReducer = persistReducer(persistConfig, mychecklistSlice);
 export const store = configureStore({
   reducer: {
     mycheckList: persistedReducer,
+    preDepartureDocList: preDepartureDocSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -6,6 +6,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
   },
+  headerContainer: {
+    flexDirection: "row",
+  },
+  cancelContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 16,
+    textAlign: "center",
+    flex: 1,
+  },
   backgroundBar: {
     ...StyleSheet.absoluteFillObject,
   },

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Group_6270" data-name="Group 6270" transform="translate(1123 8907)">
+    <g id="radio_button_unchecked_black_24dp" transform="translate(-1123 -8907)">
+      <path id="Path_41015" data-name="Path 41015" d="M0,0H24V24H0Z" fill="none"/>
+      <path id="Path_41016" data-name="Path 41016" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" fill="#cb3c47"/>
+    </g>
+    <g id="Group_6269" data-name="Group 6269" transform="translate(-34 736)">
+      <rect id="Rectangle_4190" data-name="Rectangle 4190" width="2" height="6" transform="translate(-1078 -9636)" fill="#cb3c47"/>
+      <rect id="Rectangle_4191" data-name="Rectangle 4191" width="2" height="2" transform="translate(-1078 -9628)" fill="#cb3c47"/>
+    </g>
+  </g>
+</svg>

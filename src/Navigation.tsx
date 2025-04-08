@@ -12,7 +12,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Checklists">
+      <Stack.Navigator initialRouteName="PreDepartureDocs">
         <Stack.Screen
           name="Checklists"
           component={ChecklistsScreen}
@@ -31,7 +31,7 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen
           name="PreDepartureDocs"
           component={ViewPreDepartureDocs}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
