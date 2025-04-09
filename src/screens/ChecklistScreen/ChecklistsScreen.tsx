@@ -27,7 +27,12 @@ import {
 } from "../../store/mychecklistSlice";
 import { Colors } from "../../theme";
 import IconArrow from "../../assets/icons/iconArrow.svg";
+import IconDocument from "../../assets/icons/iconDocument.svg";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import {
+  initializeIfEmpty,
+  selectAllDocuments,
+} from "../../store/preDepartureDocSlice";
 
 type Props = StackScreenProps<RootStackParamList, "Checklists">;
 
@@ -39,15 +44,30 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const data = useAppSelector(selectMyCheckList);
 
+  const preDapartureData = useAppSelector(selectAllDocuments);
+
+  const doneCount = preDapartureData.filter(
+    (doc) => doc.status === "Done" || doc.status === "Skipped"
+  ).length;
+
+  const progress =
+    preDapartureData.length > 0
+      ? Math.round((doneCount / preDapartureData.length) * 100)
+      : 0;
+
   const handleDelete = (id: string) => {
     dispatch(removeCheckListCategory({ titleId: id }));
   };
-  const progress = 65; // percentage
+
   const circularRef = useRef<AnimatedCircularProgress>(null);
 
   useEffect(() => {
     circularRef.current?.animate(progress, 1000); // 1000ms = 1 second
   }, [progress]);
+
+  useEffect(() => {
+    dispatch(initializeIfEmpty());
+  }, [dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -107,6 +127,17 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
               }}
             />
           )}
+          ListEmptyComponent={
+            <View style={styles.emptyStateContainer}>
+              <IconDocument width={48} height={48} fill={Colors.grey600} />
+              <Text style={styles.emptyStateText}>
+                No checklists created yet
+              </Text>
+              <Text style={styles.emptyStateSubText}>
+                Tap the + button to create your first checklist
+              </Text>
+            </View>
+          }
           renderItem={({ item }) => (
             <ChecklistItemRenderer
               checkListCategory={item}

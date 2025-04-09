@@ -41,7 +41,6 @@ const ChecklistItemsList = ({
               style={styles.itemInput}
               value={item.name}
               onChangeText={(text) => onTextChange(item.itemId, text)}
-              placeholder="Edit item"
               onSubmitEditing={onSubmitNewItem}
               returnKeyType="done"
               multiline={false}

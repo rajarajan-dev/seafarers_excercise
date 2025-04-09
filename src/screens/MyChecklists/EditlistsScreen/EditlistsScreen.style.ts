@@ -8,8 +8,9 @@ export default StyleSheet.create({
     backgroundColor: Colors.nav30,
   },
   title: {
-    fontFamily: Typography.fontFamily.RobotoBold,
     fontSize: 18,
+    fontFamily: Typography.fontFamily.RobotoBold,
+    marginTop: 15,
     marginBottom: 20,
     color: "#000000DE",
     textAlign: "left",

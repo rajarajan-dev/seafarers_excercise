@@ -17,8 +17,10 @@ export default StyleSheet.create({
     borderBottomColor: "#e0e0e0",
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontFamily: Typography.fontFamily.RobotoBold,
+    marginTop: 15,
+    marginBottom: 20,
     flexShrink: 1,
   },
   editButton: {
@@ -35,12 +37,14 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 8,
-    paddingHorizontal: 16,
     backgroundColor: "transparent",
   },
+  completedItemText: {
+    color: Colors.grey600,
+  },
   sectionHeaderText: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.RobotoMedium,
     marginRight: 8,
   },
   sectionCountText: {

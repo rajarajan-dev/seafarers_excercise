@@ -32,6 +32,7 @@ const AddNewChecklistScreen: React.FC<Props> = ({ setModalVisible }) => {
 
   const navigation = useNavigation<AddCategoryNavigationProp>();
   const [insertItem, setInsertItem] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -52,7 +53,7 @@ const AddNewChecklistScreen: React.FC<Props> = ({ setModalVisible }) => {
       titleId: generateUniqueId(),
       titleName: insertItem,
       createdAt: new Date().toISOString(),
-      lastItemAdded: "Not yet",
+      lastItemAdded: "",
       items: [],
     };
     dispatch(addCheckListCategory(payload));
@@ -73,17 +74,22 @@ const AddNewChecklistScreen: React.FC<Props> = ({ setModalVisible }) => {
           >
             <CircularIcon props={styles.circleContainer} />
           </TouchableOpacity>
-          <RoundedButton
-            title="Done"
-            onButtonClick={handleAddCheckListCategory}
-          />
+          {isVisible && (
+            <RoundedButton
+              title="Done"
+              onButtonClick={handleAddCheckListCategory}
+            />
+          )}
         </View>
         {/* Title input box */}
         <View style={styles.titleInputBox}>
           <ClearableInput
             ref={inputRef}
             value={insertItem}
-            onChangeText={setInsertItem}
+            onChangeText={(text) => {
+              text ? setIsVisible(true) : setIsVisible(false);
+              setInsertItem(text);
+            }}
             placeholder="Insert list's title"
           />
         </View>

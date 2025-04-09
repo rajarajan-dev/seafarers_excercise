@@ -27,6 +27,7 @@ import IconDocument from "../../../assets/icons/iconDocument.svg";
 import SwipeableSectionRow, {
   SwipeableSectionRowRef,
 } from "../../../components/SwipeableSectionRow";
+import { Colors } from "../../../theme";
 
 type ShowCheckListNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -89,7 +90,13 @@ const ViewlistsScreen = () => {
     navigation.navigate("Editlists", { titleId });
   };
 
-  const renderItem = ({ item }: { item: ChecklistItem }) => (
+  const renderItem = ({
+    item,
+    section,
+  }: {
+    item: ChecklistItem;
+    section: Section;
+  }) => (
     <SwipeableSectionRow
       key={item.itemId + item.status}
       ref={(ref) => {
@@ -118,7 +125,14 @@ const ViewlistsScreen = () => {
       <View style={styles.itemContainer}>
         <IconDocument height={25} width={25} />
 
-        <Text style={styles.itemText}>{item.name}</Text>
+        <Text
+          style={[
+            styles.itemText,
+            section.title === "Completed tasks" && styles.completedItemText,
+          ]}
+        >
+          {item.name}
+        </Text>
       </View>
     </SwipeableSectionRow>
   );
@@ -138,7 +152,7 @@ const ViewlistsScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.nav30 }}>
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.headerContainer}>
@@ -176,7 +190,7 @@ const ViewlistsScreen = () => {
             ) : null
           }
           contentContainerStyle={styles.listContent}
-          stickySectionHeadersEnabled={true}
+          stickySectionHeadersEnabled={false}
         />
       </View>
     </SafeAreaView>

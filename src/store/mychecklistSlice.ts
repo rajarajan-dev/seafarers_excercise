@@ -28,13 +28,23 @@ const categoryOperations = {
 const itemOperations = {
   addItem: (state: MyChecklistState, titleId: string, item: ChecklistItem) => {
     const category = categoryOperations.findCategory(state, titleId);
-    category?.items.push(item);
+    if (category) {
+      category.items.push(item);
+      category.lastItemAdded = item.name; // Update with item name
+      category.items.push(item);
+    }
   },
 
   removeItem: (state: MyChecklistState, titleId: string, itemId: string) => {
     const category = categoryOperations.findCategory(state, titleId);
     if (category) {
       category.items = category.items.filter((item) => item.itemId !== itemId);
+      // Update lastItemAdded to the most recent item if any remain
+      if (category.items.length > 0) {
+        category.lastItemAdded = category.items[category.items.length - 1].name;
+      } else {
+        category.lastItemAdded = "";
+      }
     }
   },
 
@@ -46,6 +56,11 @@ const itemOperations = {
     const category = categoryOperations.findCategory(state, titleId);
     if (category) {
       category.items = items;
+      if (category.items.length > 0) {
+        category.lastItemAdded = category.items[category.items.length - 1].name;
+      } else {
+        category.lastItemAdded = "";
+      }
     }
   },
 

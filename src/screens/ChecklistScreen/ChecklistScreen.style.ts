@@ -41,6 +41,27 @@ const styles = StyleSheet.create({
     color: Colors.black,
     textAlign: "center",
   },
+
+  emptyStateContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
+  },
+  emptyStateText: {
+    fontSize: 16,
+    color: Colors.grey600,
+    textAlign: "center",
+    marginTop: 16,
+    fontFamily: Typography.fontFamily.RobotoRegular,
+  },
+  emptyStateSubText: {
+    fontSize: 14,
+    color: Colors.grey600,
+    textAlign: "center",
+    marginTop: 8,
+    fontFamily: Typography.fontFamily.RobotoRegular,
+  },
 });
 
 export default styles;

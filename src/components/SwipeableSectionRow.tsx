@@ -91,6 +91,22 @@ const SwipeableSectionRow = forwardRef<SwipeableSectionRowRef, Props>(
             },
           ]}
         >
+          {/* Delete Button (Only when item is Todo) */}
+          {isTodo && (
+            <TouchableOpacity
+              onPress={() => {
+                release(0);
+                setTimeout(() => {
+                  onDelete();
+                }, 200); // Match animation duration
+              }}
+              style={[styles.action, styles.delete]}
+            >
+              <IconTrashCan width={24} height={24} fill="#fff" />
+              <Text style={styles.actionText}>Delete</Text>
+            </TouchableOpacity>
+          )}
+
           {/* Toggle Button */}
           <TouchableOpacity
             onPress={() => {
@@ -113,22 +129,6 @@ const SwipeableSectionRow = forwardRef<SwipeableSectionRowRef, Props>(
               </>
             )}
           </TouchableOpacity>
-
-          {/* Delete Button (Only when item is Todo) */}
-          {isTodo && (
-            <TouchableOpacity
-              onPress={() => {
-                release(0);
-                setTimeout(() => {
-                  onDelete();
-                }, 200); // Match animation duration
-              }}
-              style={[styles.action, styles.delete]}
-            >
-              <IconTrashCan width={24} height={24} fill="#fff" />
-              <Text style={styles.actionText}>Delete</Text>
-            </TouchableOpacity>
-          )}
         </Animated.View>
 
         {/* Swipable Content */}
@@ -183,7 +183,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 12,
     fontFamily: Typography.fontFamily.RobotoMedium,
-    textTransform: "uppercase",
+    textTransform: "none",
+    marginTop: 5,
   },
 });
 
