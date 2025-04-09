@@ -1,9 +1,9 @@
 import React, { RefObject } from "react";
 import { FlatList, TextInput, View, Text, StyleSheet } from "react-native";
-import { ChecklistItem } from "../types/CheckListTypes";
-import { Colors, Typography } from "../theme";
-import IconDocument from "../assets/icons/iconDocument.svg";
-import LineSeparator from "./LineSeparator";
+import { ChecklistItem } from "../../types/CheckListTypes";
+import { Colors, Typography } from "../../theme";
+import IconDocument from "../../assets/icons/iconDocument.svg";
+import LineSeparator from ".././atoms/LineSeparator";
 
 type Props = {
   items: ChecklistItem[];

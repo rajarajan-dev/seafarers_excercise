@@ -1,12 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Colors, Typography } from "../theme";
+import { Colors, Typography } from "../../theme";
 interface Props {
   title: string;
   onButtonClick: () => void;
 }
 
-const RoundedButtonOutline: React.FC<Props> = ({ title, onButtonClick }) => {
+const RoundedButton: React.FC<Props> = ({ title, onButtonClick }) => {
   return (
     <View style={styles.saveEditContainer}>
       <TouchableOpacity onPress={onButtonClick}>
@@ -18,7 +18,7 @@ const RoundedButtonOutline: React.FC<Props> = ({ title, onButtonClick }) => {
   );
 };
 
-export default RoundedButtonOutline;
+export default RoundedButton;
 
 const styles = StyleSheet.create({
   saveEditContainer: {
@@ -26,17 +26,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   saveButton: {
-    backgroundColor: "transparent", // No fill
-    borderColor: Colors.blue,
-    borderWidth: 2,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    minHeight: 35,
+    backgroundColor: Colors.blue,
+    padding: 16,
     minWidth: 100,
+    minHeight: 35,
     borderRadius: 35,
   },
   saveText: {
-    color: Colors.blue,
+    color: "white",
     textAlign: "center",
     fontFamily: Typography.fontFamily.RobotoBold,
     fontSize: 14,

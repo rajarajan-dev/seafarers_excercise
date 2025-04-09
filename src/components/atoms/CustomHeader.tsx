@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import BackArrow from "../assets/icons/backarrow.svg";
-import { Typography } from "../theme";
+import BackArrow from "../../assets/icons/backarrow.svg";
+import { Typography } from "../../theme";
 
 interface Props {
   title: string;

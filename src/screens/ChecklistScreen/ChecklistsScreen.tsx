@@ -9,16 +9,16 @@ import {
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types/navigation";
-import CustomHeader from "../../components/CustomHeader";
+import CustomHeader from "../../components/atoms/CustomHeader";
 import styles from "./ChecklistScreen.style";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TitleAndSubtitleSection from "../../components/TitleAndSubtitleSection";
+import TitleAndSubtitleSection from "../../components/atoms/TitleAndSubtitleSection";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../hooks/stateManagementHooks";
 import IconAdd from "../../assets/icons/iconAdd.svg";
-import ChecklistItemRenderer from "../../components/ChecklistItemRenderer";
+import ChecklistItemRenderer from "../../components/organisms/ChecklistItemRenderer";
 import AddNewChecklistScreen from "../MyChecklists/AddNewChecklistScreen/AddNewChecklistScreen";
 import { BlurView } from "@react-native-community/blur";
 import {

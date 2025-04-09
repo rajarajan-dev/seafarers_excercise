@@ -23,9 +23,9 @@ import styles from "./EditlistsScreen.style";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { RootStackParamList } from "../../../types/navigation";
 import { generateUniqueId } from "../../../helper/generateUniqueId";
-import RoundedButton from "../../../components/RoundedButton";
+import RoundedButton from "../../../components/atoms/RoundedButton";
 import IconBack from "../../../assets/icons/iconBack.svg";
-import ChecklistItemsList from "../../../components/ChecklistItemsList";
+import ChecklistItemsList from "../../../components/organisms/ChecklistItemsList";
 
 type ShowCheckListNavigationProp = StackNavigationProp<
   RootStackParamList,

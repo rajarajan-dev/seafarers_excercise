@@ -6,8 +6,8 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import IconExclamation from "../assets/icons/iconExclamation.svg";
-import { Colors, Typography } from "../theme";
+import IconExclamation from "../../assets/icons/iconExclamation.svg";
+import { Colors, Typography } from "../../theme";
 
 const HorizontalList = () => {
   // Set first item as selected by default

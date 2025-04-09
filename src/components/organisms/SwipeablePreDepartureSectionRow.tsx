@@ -7,11 +7,14 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import IconCheck from "../assets/icons/iconDone.svg";
-import IconUndo from "../assets/icons/iconUnDone.svg";
-import IconSkippedWhite from "../assets/icons/iconSkipWhite.svg";
-import { Colors, Typography } from "../theme";
-import { DocumentItem, DocumentStatus } from "../types/PreDepartureDocsTypes";
+import IconCheck from "../../assets/icons/iconDone.svg";
+import IconUndo from "../../assets/icons/iconUnDone.svg";
+import IconSkippedWhite from "../../assets/icons/iconSkipWhite.svg";
+import { Colors, Typography } from "../../theme";
+import {
+  DocumentItem,
+  DocumentStatus,
+} from "../../types/PreDepartureDocsTypes";
 
 type Props = {
   item: DocumentItem;

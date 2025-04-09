@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { Colors } from "../theme";
+import { Colors } from "../../theme";
 
 const LineSeparator = () => {
   return (

@@ -6,8 +6,8 @@ import {
   StyleSheet,
   TextInput as RNTextInput,
 } from "react-native";
-import IconClear from "../assets/icons/iconClose.svg";
-import { Colors, Typography } from "../theme";
+import IconClear from "../../assets/icons/iconClose.svg";
+import { Colors, Typography } from "../../theme";
 
 export interface ClearableInputRef {
   focus: () => void;

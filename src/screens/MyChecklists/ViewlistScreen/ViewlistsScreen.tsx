@@ -21,12 +21,12 @@ import {
 import { RootStackParamList } from "../../../types/navigation";
 import styles from "./ViewlistsScreen.style";
 import IconBack from "../../../assets/icons/iconBack.svg";
-import RoundedButtonOutline from "../../../components/RoundedButtonOutline";
-import LineSeparator from "../../../components/LineSeparator";
+import RoundedButtonOutline from "../../../components/atoms/RoundedButtonOutline";
+import LineSeparator from "../../../components/atoms/LineSeparator";
 import IconDocument from "../../../assets/icons/iconDocument.svg";
 import SwipeableSectionRow, {
   SwipeableSectionRowRef,
-} from "../../../components/SwipeableSectionRow";
+} from "../../../components/organisms/SwipeableSectionRow";
 import { Colors } from "../../../theme";
 
 type ShowCheckListNavigationProp = StackNavigationProp<

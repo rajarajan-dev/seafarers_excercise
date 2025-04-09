@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
-import IconBack from "../assets/icons/iconBack.svg";
-import { Colors } from "../theme";
+import IconBack from "../../assets/icons/iconBack.svg";
+import { Colors } from "../../theme";
 
 interface CircleIconProps {
   props: StyleProp<ViewStyle>;

@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import IconTrashCan from "../assets/icons/iconTrashCan.svg";
-import IconCheck from "../assets/icons/iconDone.svg";
-import IconUndo from "../assets/icons/iconUnDone.svg";
-import { Colors, Typography } from "../theme";
+import IconTrashCan from "../../assets/icons/iconTrashCan.svg";
+import IconCheck from "../../assets/icons/iconDone.svg";
+import IconUndo from "../../assets/icons/iconUnDone.svg";
+import { Colors, Typography } from "../../theme";
 
 type Props = {
   children: React.ReactNode;

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { View, Animated, StyleSheet, Text } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import MaskedView from "@react-native-masked-view/masked-view";
-import { Colors, Typography } from "../theme";
+import { Colors, Typography } from "../../theme";
 
 const GradientProgressBar = ({
   progress = 50,

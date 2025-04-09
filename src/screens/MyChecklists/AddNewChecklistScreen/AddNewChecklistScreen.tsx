@@ -1,12 +1,12 @@
 import { View, TouchableOpacity, Alert } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 
-import CircularIcon from "../../../components/CircularIcon";
+import CircularIcon from "../../../components/atoms/CircularIcon";
 import useStatusBarHeight from "../../../hooks/useStatusBarHeight";
 import ClearableInput, {
   ClearableInputRef,
-} from "../../../components/ClearableInput";
-import RoundedButton from "../../../components/RoundedButton";
+} from "../../../components/atoms/ClearableInput";
+import RoundedButton from "../../../components/atoms/RoundedButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../types/navigation";
 import { useNavigation } from "@react-navigation/native";

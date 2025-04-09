@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import GradientProgressBar from "../../components/GradientProgressBar";
-import HorizontalList from "../../components/HorizontalList";
+import GradientProgressBar from "../../components/molecules/GradientProgressBar";
+import HorizontalList from "../../components/atoms/HorizontalList";
 import styles from "./ViewPreDepartureDocs.style";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types/navigation";
@@ -25,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../hooks/stateManagementHooks";
 import SwipeablePreDepartureSectionRow, {
   SwipeablePreDepartureSectionRowRef,
-} from "../../components/SwipeablePreDepartureSectionRow";
+} from "../../components/organisms/SwipeablePreDepartureSectionRow";
 import {
   DocumentItem,
   DocumentStatus,
@@ -41,9 +41,9 @@ import {
   formatDate,
   formatDateToDDMMYY,
 } from "../../helper/formatDateToDDMMYY";
-import LineSeparator from "../../components/LineSeparator";
+import LineSeparator from "../../components/atoms/LineSeparator";
 import { Colors, Typography } from "../../theme";
-import ConfirmationDialog from "./ConfirmationDialog";
+import ConfirmationDialog from "../../components/molecules/ConfirmationDialog";
 import { BlurView } from "@react-native-community/blur";
 
 type ViewPreDepartureDocsProp = StackNavigationProp<
@@ -260,6 +260,7 @@ const ViewPreDepartureDocs = () => {
           <Text
             style={{
               margin: 16,
+              marginLeft: 24,
               fontFamily: Typography.fontFamily.RobotoItalic,
               fontSize: 12,
               fontStyle: "italic",

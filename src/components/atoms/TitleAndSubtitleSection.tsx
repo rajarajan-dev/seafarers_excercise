@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import React from "react";
-import { Typography } from "../theme";
+import { Typography } from "../../theme";
 
 interface Props {
   title: string;

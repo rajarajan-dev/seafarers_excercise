@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useRef } from "react";
-import { Colors, Typography } from "../theme";
-import { ChecklistCategory } from "../types/CheckListTypes";
-import IconArrow from "../assets/icons/iconArrow.svg";
-import { formatDateToDDMMYY } from "../helper/formatDateToDDMMYY";
+import { Colors, Typography } from "../../theme";
+import { ChecklistCategory } from "../../types/CheckListTypes";
+import IconArrow from "../../assets/icons/iconArrow.svg";
+import { formatDateToDDMMYY } from "../../helper/formatDateToDDMMYY";
 import SwipeableRow, { SwipeableRowRef } from "./SwipeableRow";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types/navigation";
+import { RootStackParamList } from "../../types/navigation";
 
 type Props = {
   checkListCategory: ChecklistCategory;
