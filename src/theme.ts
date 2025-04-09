@@ -5,6 +5,7 @@ const Colors = {
   green600: "#4F9B90",
   red500: "#E6767F",
   nav500: "#8FAABF",
+  nav800: "#002646",
   separator: "#C7CBCE",
   marlowBlue: "#005AA5",
   blue: "#0093BB",

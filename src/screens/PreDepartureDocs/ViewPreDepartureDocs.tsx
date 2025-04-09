@@ -1,4 +1,11 @@
-import { SectionList, Text, TouchableOpacity, View } from "react-native";
+import {
+  Modal,
+  SectionList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GradientProgressBar from "../../components/GradientProgressBar";
@@ -19,7 +26,10 @@ import { useAppSelector } from "../../hooks/stateManagementHooks";
 import SwipeablePreDepartureSectionRow, {
   SwipeablePreDepartureSectionRowRef,
 } from "../../components/SwipeablePreDepartureSectionRow";
-import { DocumentItem } from "../../types/PreDepartureDocsTypes";
+import {
+  DocumentItem,
+  DocumentStatus,
+} from "../../types/PreDepartureDocsTypes";
 
 import IconPending from "../../assets/icons/iconExclamation.svg";
 import IconDocument from "../../assets/icons/iconDocument.svg";
@@ -33,6 +43,8 @@ import {
 } from "../../helper/formatDateToDDMMYY";
 import LineSeparator from "../../components/LineSeparator";
 import { Colors, Typography } from "../../theme";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { BlurView } from "@react-native-community/blur";
 
 type ViewPreDepartureDocsProp = StackNavigationProp<
   RootStackParamList,
@@ -43,6 +55,12 @@ const ViewPreDepartureDocs = () => {
   const navigation = useNavigation<ViewPreDepartureDocsProp>();
   const dispatch = useDispatch();
   const data = useAppSelector(selectAllDocuments);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentItem, setCurrentItem] = useState<{
+    id: string;
+    newStatus: DocumentStatus;
+  } | null>(null);
 
   const doneCount = data.filter(
     (doc) => doc.status === "Done" || doc.status === "Skipped"
@@ -80,9 +98,20 @@ const ViewPreDepartureDocs = () => {
     dispatch(initializeIfEmpty());
   }, [dispatch]);
 
-  const renderItem = ({ item }: { item: DocumentItem }) => {
+  const renderItem = ({
+    item,
+    section,
+  }: {
+    item: DocumentItem;
+    section: { title: string };
+  }) => {
     const handleStatusChange = (newStatus: DocumentItem["status"]) => {
-      dispatch(updateDocumentStatus({ id: item.id, newStatus }));
+      if (newStatus === "Submitted") {
+        setCurrentItem({ id: item.id, newStatus });
+        setModalVisible(true);
+      } else {
+        dispatch(updateDocumentStatus({ id: item.id, newStatus }));
+      }
     };
 
     const renderStatusIcon = () => {
@@ -103,6 +132,9 @@ const ViewPreDepartureDocs = () => {
           return <IconDocument width={24} height={24} />;
       }
     };
+
+    // Determine if this item is in the completed section
+    const isCompleted = section.title === "Completed";
 
     return (
       <SwipeablePreDepartureSectionRow
@@ -126,21 +158,50 @@ const ViewPreDepartureDocs = () => {
             <View style={styles.iconContainer}>{renderStatusIcon()}</View>
             <View style={styles.detailsContainer}>
               <View style={styles.titleRow}>
-                <Text style={styles.title}>{item.name}</Text>
+                <Text
+                  style={[
+                    styles.title,
+                    isCompleted && { color: Colors.grey600 },
+                  ]}
+                >
+                  {item.name}
+                </Text>
                 {item.type === "Optional" && (
-                  <Text style={styles.optional}>(Optional)</Text>
+                  <Text
+                    style={[
+                      styles.optional,
+                      isCompleted && { color: Colors.grey600 },
+                    ]}
+                  >
+                    (Optional)
+                  </Text>
                 )}
               </View>
               {item.nationality && item.docNumber ? (
-                <Text style={styles.subText}>
+                <Text
+                  style={[
+                    styles.subText,
+                    isCompleted && { color: Colors.grey600 },
+                  ]}
+                >
                   {item.nationality}, {item.docNumber}
                 </Text>
               ) : null}
               <View style={styles.dateRow}>
-                <Text style={styles.optional}>
+                <Text
+                  style={[
+                    styles.optional,
+                    isCompleted && { color: Colors.grey600 },
+                  ]}
+                >
                   Issue date: {formatDate(item.issueDate)}
                 </Text>
-                <Text style={styles.optional}>
+                <Text
+                  style={[
+                    styles.optional,
+                    isCompleted && { color: Colors.grey600 },
+                  ]}
+                >
                   Exp. date: {formatDate(item.expiryDate)}
                 </Text>
               </View>
@@ -149,6 +210,21 @@ const ViewPreDepartureDocs = () => {
         </View>
       </SwipeablePreDepartureSectionRow>
     );
+  };
+
+  const handleConfirmation = (confirmed: boolean) => {
+    if (confirmed && currentItem) {
+      // User confirmed - dispatch the status change
+      dispatch(
+        updateDocumentStatus({
+          id: currentItem.id,
+          newStatus: currentItem.newStatus,
+        })
+      );
+    }
+    // Close the modal regardless of confirmation
+    setModalVisible(false);
+    setCurrentItem(null);
   };
 
   return (
@@ -232,6 +308,23 @@ const ViewPreDepartureDocs = () => {
           />
         </View>
       </View>
+      {/* MODAL */}
+      <Modal
+        visible={modalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.absolute}>
+          <BlurView
+            style={StyleSheet.absoluteFill}
+            blurType="light"
+            blurAmount={1}
+            reducedTransparencyFallbackColor="white"
+          />
+          <ConfirmationDialog handleConfirmation={handleConfirmation} />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

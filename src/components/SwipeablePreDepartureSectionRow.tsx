@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import IconCheck from "../assets/icons/iconDone.svg";
 import IconUndo from "../assets/icons/iconUnDone.svg";
-import IconSkipped from "../assets/icons/iconSkip.svg";
+import IconSkippedWhite from "../assets/icons/iconSkipWhite.svg";
 import { Colors, Typography } from "../theme";
 import { DocumentItem, DocumentStatus } from "../types/PreDepartureDocsTypes";
 
@@ -102,6 +102,7 @@ const SwipeablePreDepartureSectionRow = forwardRef<
   let actionLabel: string | null = null;
   let icon = null;
   let targetStatus: DocumentStatus | null = null;
+  let targetBGColor = Colors.green600;
 
   if (!isDisabled) {
     if (
@@ -111,6 +112,7 @@ const SwipeablePreDepartureSectionRow = forwardRef<
       actionLabel = "Done";
       icon = <IconCheck width={24} height={24} fill="#fff" />;
       targetStatus = "Done";
+      targetBGColor = Colors.green600;
     } else if (
       (item.type === "Mandatory" || item.type === "Optional") &&
       (item.status === "Done" || item.status === "Skipped")
@@ -118,10 +120,12 @@ const SwipeablePreDepartureSectionRow = forwardRef<
       actionLabel = "Uncheck";
       icon = <IconUndo width={24} height={24} fill="#fff" />;
       targetStatus = "Todo";
+      targetBGColor = Colors.green600;
     } else if (item.type === "AttentionRequired" && item.status === "Todo") {
       actionLabel = "Submitted";
       icon = <IconCheck width={24} height={24} fill="#00f" />;
       targetStatus = "Submitted";
+      targetBGColor = Colors.nav800;
     }
   }
 
@@ -168,7 +172,7 @@ const SwipeablePreDepartureSectionRow = forwardRef<
         >
           <TouchableOpacity
             onPress={handleAction}
-            style={[styles.action, styles.toggle]}
+            style={[styles.action, { backgroundColor: targetBGColor }]}
           >
             {icon}
             <Text style={styles.actionText}>{actionLabel}</Text>
@@ -179,7 +183,7 @@ const SwipeablePreDepartureSectionRow = forwardRef<
               onPress={handleSkip}
               style={[styles.action, styles.toggle]}
             >
-              <IconSkipped width={24} height={24} fill="#fff" />
+              <IconSkippedWhite width={24} height={24} fill="#fff" />
               <Text style={styles.actionText}>Skip</Text>
             </TouchableOpacity>
           )}
@@ -230,12 +234,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   toggle: {
-    backgroundColor: Colors.green600,
+    backgroundColor: Colors.nav800,
   },
   actionText: {
     color: "white",
     fontSize: 12,
-    fontFamily: Typography.fontFamily.RobotoMedium,
+    fontFamily: Typography.fontFamily.RobotoRegular,
+    marginTop: 5,
     textTransform: "uppercase",
   },
 });

@@ -91,6 +91,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#666",
   },
+
+  absolute: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
 });
 
 export default styles;
