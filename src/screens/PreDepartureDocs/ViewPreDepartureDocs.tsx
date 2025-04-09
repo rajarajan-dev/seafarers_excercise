@@ -45,6 +45,8 @@ import LineSeparator from "../../components/atoms/LineSeparator";
 import { Colors, Typography } from "../../theme";
 import ConfirmationDialog from "../../components/molecules/ConfirmationDialog";
 import { BlurView } from "@react-native-community/blur";
+import withLoading from "../../hoc/withLoading";
+import { useLoading } from "../../context/LoadingContext";
 
 type ViewPreDepartureDocsProp = StackNavigationProp<
   RootStackParamList,
@@ -56,6 +58,7 @@ const ViewPreDepartureDocs = () => {
   const dispatch = useDispatch();
   const data = useAppSelector(selectAllDocuments);
 
+  const { showLoading, hideLoading } = useLoading();
   const [modalVisible, setModalVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState<{
     id: string;
@@ -80,6 +83,31 @@ const ViewPreDepartureDocs = () => {
   const [isScrollEnabled, setScrollEnabled] = useState(true);
   const rowRefs = useRef(new Map<string, SwipeablePreDepartureSectionRowRef>());
   const scrollRef = useRef<boolean>(true);
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const submitPendingDocument = () => {
+    showLoading();
+    currentItem &&
+      dispatch(
+        updateDocumentStatus({
+          id: currentItem.id,
+          newStatus: currentItem.newStatus,
+        })
+      );
+    timerRef.current = setTimeout(() => {
+      hideLoading();
+    }, 2000);
+  };
+
+  useEffect(() => {
+    // Cleanup on unmount
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   const sections = [
     {
@@ -214,13 +242,7 @@ const ViewPreDepartureDocs = () => {
 
   const handleConfirmation = (confirmed: boolean) => {
     if (confirmed && currentItem) {
-      // User confirmed - dispatch the status change
-      dispatch(
-        updateDocumentStatus({
-          id: currentItem.id,
-          newStatus: currentItem.newStatus,
-        })
-      );
+      submitPendingDocument();
     }
     // Close the modal regardless of confirmation
     setModalVisible(false);
@@ -330,4 +352,4 @@ const ViewPreDepartureDocs = () => {
   );
 };
 
-export default ViewPreDepartureDocs;
+export default withLoading(ViewPreDepartureDocs);

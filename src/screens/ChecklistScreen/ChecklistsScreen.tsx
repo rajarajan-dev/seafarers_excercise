@@ -33,6 +33,8 @@ import {
   initializeIfEmpty,
   selectAllDocuments,
 } from "../../store/preDepartureDocSlice";
+import { useLoading } from "../../context/LoadingContext";
+import withLoading from "../../hoc/withLoading";
 
 type Props = StackScreenProps<RootStackParamList, "Checklists">;
 
@@ -65,8 +67,16 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
     circularRef.current?.animate(progress, 1000); // 1000ms = 1 second
   }, [progress]);
 
+  const { showLoading, hideLoading } = useLoading();
+
   useEffect(() => {
     dispatch(initializeIfEmpty());
+    showLoading();
+    const timer = setTimeout(() => {
+      hideLoading();
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, [dispatch]);
 
   return (
@@ -181,4 +191,4 @@ const ChecklistsScreen: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export default ChecklistsScreen;
+export default withLoading(ChecklistsScreen);
