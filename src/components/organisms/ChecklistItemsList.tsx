@@ -43,6 +43,10 @@ const ChecklistItemsList = ({
               onChangeText={(text) => onTextChange(item.itemId, text)}
               onSubmitEditing={onSubmitNewItem}
               returnKeyType="done"
+              autoCorrect={false}
+              autoCapitalize="none"
+              autoComplete="off"
+              spellCheck={false}
               multiline={false}
             />
           </View>

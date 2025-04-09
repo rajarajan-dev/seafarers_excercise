@@ -37,6 +37,10 @@ const ClearableInput = forwardRef<ClearableInputRef, ClearableInputProps>(
           onChangeText={onChangeText}
           placeholder={placeholder || "Insert list's title"}
           placeholderTextColor={Colors.grey600}
+          autoCorrect={false} 
+          autoCapitalize="none" 
+          autoComplete="off" 
+          spellCheck={false}
           style={styles.textInput}
         />
         {value.length > 0 && (
